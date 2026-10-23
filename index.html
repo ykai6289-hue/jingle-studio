@@ -85,7 +85,7 @@ body.admin .admin-only.flex{display:flex !important}
 .upload-hint{font-size:11px;color:var(--muted);margin-top:4px}
 
 /* TOOLBAR (sticky) */
-.toolbar{position:sticky;top:var(--nav-h);z-index:90;display:flex;align-items:center;gap:12px;padding:12px var(--pad);border-bottom:1px solid var(--border);background:rgba(7,7,12,0.96);backdrop-filter:blur(12px)}
+.toolbar{position:sticky;top:var(--nav-h);z-index:90;display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:12px var(--pad);border-bottom:1px solid var(--border);background:rgba(7,7,12,0.96);backdrop-filter:blur(12px)}
 .chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0;padding:2px 0}
 .chips::-webkit-scrollbar{display:none}
 .chip{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border:1px solid var(--border2);background:transparent;color:var(--muted);font-size:12px;letter-spacing:0.04em;cursor:pointer;border-radius:20px;transition:all 0.2s;white-space:nowrap;flex-shrink:0}
@@ -95,6 +95,12 @@ body.admin .admin-only.flex{display:flex !important}
 .chip.active .n{background:rgba(7,7,12,0.18);color:#07070c}
 .chip-sep{width:1px;background:var(--border2);margin:4px 4px;flex-shrink:0}
 .tool-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.brand-row{flex-basis:100%;display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0 0;margin-top:-2px}
+.brand-row::-webkit-scrollbar{display:none}
+.brand-row .lbl{font-size:11px;color:var(--dim);flex-shrink:0;margin-right:4px;letter-spacing:0.06em}
+.chip.sm{padding:5px 12px;font-size:11px;border-radius:14px;border-color:var(--border)}
+.chip.sm.active{background:rgba(184,154,90,0.14);color:var(--gold-light);border-color:var(--gold)}
+.chip.sm.active .n{background:rgba(184,154,90,0.18);color:var(--gold-light)}
 .search{position:relative}
 .search i{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:15px;pointer-events:none}
 .search input{width:200px;padding:8px 12px 8px 32px;background:var(--bg2);border:1px solid var(--border2);color:var(--text);font-size:12px;border-radius:3px;outline:none}
@@ -171,7 +177,16 @@ body.admin .admin-only.flex{display:flex !important}
 .field-hint{font-size:11px;color:var(--dim)}
 
 /* CATEGORY MANAGER */
-.cat-head,.cat-row{display:grid;grid-template-columns:22px 1fr 1fr 56px 30px 30px 30px;gap:8px;align-items:center}
+.cat-head,.cat-row{display:grid;grid-template-columns:22px 1fr 1fr 50px 92px 30px 30px 30px;gap:8px;align-items:center}
+.brand-toggle{height:30px;padding:0 8px;background:transparent;border:1px solid var(--border2);color:var(--muted);font-size:11px;border-radius:3px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap}
+.brand-toggle:hover,.brand-toggle.open{border-color:var(--gold);color:var(--gold-light)}
+.brand-sub{margin:-2px 0 12px 30px;padding:12px 12px 6px;border-left:2px solid #4a3c1d;background:var(--bg3);border-radius:0 4px 4px 0}
+.brand-sub-title{font-size:11px;color:var(--muted);margin-bottom:8px}
+.brand-ed{display:grid;grid-template-columns:1fr 50px 30px 30px 30px;gap:8px;align-items:center;margin-bottom:6px}
+.brand-ed input{background:var(--bg2);border:1px solid var(--border2);color:var(--text);font-size:13px;padding:7px 10px;border-radius:3px;outline:none;min-width:0}
+.brand-ed input:focus{border-color:var(--gold)}
+.brand-add{background:transparent;border:1px dashed var(--border2);color:var(--muted);font-size:12px;padding:7px;width:100%;border-radius:3px;cursor:pointer;margin:2px 0 6px}
+.brand-add:hover{border-color:var(--gold);color:var(--gold-light)}
 .cat-head{font-size:10px;color:var(--dim);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px}
 .cat-row{margin-bottom:8px}
 .cat-row input{padding:8px 10px;min-width:0}
@@ -242,16 +257,20 @@ footer{padding:32px var(--pad);border-top:1px solid var(--border);display:flex;a
   .hero-stats{gap:24px}
   .stat-num{font-size:24px}
   .toolbar{flex-wrap:wrap;gap:10px}
-  .chips{flex-basis:100%}
-  .tool-right{width:100%}
+  .chips{flex-basis:100%;order:1}
+  .brand-row{order:2;margin-top:0}
+  .tool-right{width:100%;order:3}
   .search{flex:1}
   .search input{width:100%}
   .wa-text{display:none}
   .wa-float{padding:8px}
   .form-row{grid-template-columns:1fr;gap:0}
   .modal{padding:20px}
-  .cat-head,.cat-row{grid-template-columns:18px 1fr 1fr 30px 30px 30px}
+  .cat-head,.cat-row{grid-template-columns:18px 1fr 1fr 62px 30px 30px 30px}
   .cat-count,.cat-head .c-count{display:none}
+  .brand-sub{margin-left:0}
+  .brand-ed{grid-template-columns:1fr 30px 30px 30px}
+  .brand-ed .cat-count{display:none}
 }
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
@@ -277,7 +296,7 @@ footer{padding:32px var(--pad);border-top:1px solid var(--border);display:flex;a
   <span><i class="ti ti-lock-open" aria-hidden="true"></i> 管理员模式 — 客户看不到这一栏，也看不到上传、编辑、删除按钮</span>
   <div class="admin-actions">
     <button class="btn btn-primary" onclick="openModal()"><i class="ti ti-plus" aria-hidden="true"></i>添加商品</button>
-    <button class="btn btn-gold-ghost" onclick="openCats()"><i class="ti ti-category" aria-hidden="true"></i>管理分类</button>
+    <button class="btn btn-gold-ghost" onclick="openCats()"><i class="ti ti-category" aria-hidden="true"></i>管理分类和品牌</button>
     <button class="btn btn-gold-ghost" onclick="logout()"><i class="ti ti-logout" aria-hidden="true"></i>退出</button>
   </div>
 </div>
@@ -323,6 +342,7 @@ footer{padding:32px var(--pad);border-top:1px solid var(--border);display:flex;a
       <option value="brand">Brand A–Z</option>
     </select>
   </div>
+  <div class="brand-row" id="brandRow" style="display:none"></div>
 </div>
 
 <main class="grid-wrap">
@@ -351,8 +371,19 @@ footer{padding:32px var(--pad);border-top:1px solid var(--border);display:flex;a
     <div class="form-row">
       <div class="form-group">
         <label for="f-cat">分类 Category <span class="req">*</span></label>
-        <select id="f-cat"></select>
-        <span class="field-hint">没有合适的分类？保存后点「管理分类」添加</span>
+        <select id="f-cat" onchange="onCatChange()"></select>
+      </div>
+      <div class="form-group">
+        <label for="f-brand-sel">品牌 Brand <span class="req">*</span></label>
+        <select id="f-brand-sel" onchange="onBrandSel()"></select>
+        <input type="text" id="f-brand" placeholder="输入新品牌名，如 Hermès" style="display:none"/>
+      </div>
+    </div>
+    <div class="field-hint" style="margin:-8px 0 16px">新品牌会自动加入这个分类的品牌列表。分类和品牌的改名、排序、删除在「管理分类和品牌」里。</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="f-name">商品名称 Name <span class="req">*</span></label>
+        <input type="text" id="f-name" placeholder="e.g. Birkin 30"/>
       </div>
       <div class="form-group">
         <label for="f-status">状态 Status</label>
@@ -362,16 +393,6 @@ footer{padding:32px var(--pad);border-top:1px solid var(--border);display:flex;a
           <option value="sale">特价 Sale</option>
           <option value="sold">已售 Sold</option>
         </select>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label for="f-brand">品牌 Brand <span class="req">*</span></label>
-        <input type="text" id="f-brand" placeholder="e.g. Hermès"/>
-      </div>
-      <div class="form-group">
-        <label for="f-name">商品名称 Name <span class="req">*</span></label>
-        <input type="text" id="f-name" placeholder="e.g. Birkin 30"/>
       </div>
     </div>
     <div class="form-group">
@@ -392,12 +413,13 @@ footer{padding:32px var(--pad);border-top:1px solid var(--border);display:flex;a
 
 <!-- CATEGORY MANAGER -->
 <div class="modal-overlay" id="catOverlay">
-  <div class="modal" style="width:620px" role="dialog" aria-modal="true" aria-labelledby="catTitle">
-    <div class="modal-title" id="catTitle">管理分类</div>
-    <div class="modal-sub">分类会按这里的顺序显示在网站顶部。用 ↑ ↓ 调整顺序。删除分类不会删除商品，里面的商品会变成「未分类」。改完记得点保存。</div>
-    <div class="cat-head"><span></span><span>English</span><span>中文</span><span class="c-count" style="text-align:right">商品</span><span></span><span></span><span></span></div>
+  <div class="modal" style="width:720px" role="dialog" aria-modal="true" aria-labelledby="catTitle">
+    <div class="modal-title" id="catTitle">管理分类和品牌</div>
+    <div class="modal-sub">分类和品牌按这里的顺序显示在网站上，用 ↑ ↓ 调整。点「品牌」可以编辑这个分类下的品牌；品牌改名后，商品上的品牌名会一起更新。删除分类或品牌都不会删除商品。改完记得点保存。</div>
+    <div class="cat-head"><span></span><span>English</span><span>中文</span><span class="c-count" style="text-align:right">商品</span><span></span><span></span><span></span><span></span></div>
     <div id="catList"></div>
     <button class="btn btn-ghost" style="width:100%;margin:6px 0 18px" onclick="addCat()"><i class="ti ti-plus" aria-hidden="true"></i>新增分类</button>
+    <div class="field-hint" style="margin:-10px 0 14px">只改了品牌也要点「保存分类」。</div>
     <div class="btn-row">
       <span class="save-status" id="catStatus"></span>
       <button class="btn btn-ghost" onclick="closeCats()">取消</button>
@@ -475,6 +497,8 @@ let categories = [];
 let pendingImgs = [];      // {url} = already uploaded, {file, preview} = new
 let editingId = null;
 let currentFilter = 'all'; // 'all' | category id | '__none' | '__new' | '__sale'
+let currentBrand = '';     // '' = all brands | brand id | '__other' (only inside a category)
+const openBrandCats = new Set(); // categories expanded in the manager
 let currentSort = 'default';
 let currentSearch = '';
 let currentLang = 'en';
@@ -615,8 +639,43 @@ function counts() {
   });
   return c;
 }
+function brandCounts(catId) {
+  const c = { __other: 0 };
+  const cat = catById(catId);
+  products.forEach(p => {
+    if (p.cat !== catId) return;
+    if (cat && cat.brands && cat.brands.some(b => b.id === p.brandId)) c[p.brandId] = (c[p.brandId] || 0) + 1;
+    else c.__other++;
+  });
+  return c;
+}
 function chipHTML(id, label, n) {
   return '<button class="chip' + (currentFilter === id ? ' active' : '') + '" onclick="setFilter(\'' + esc(id) + '\')">' + esc(label) + '<span class="n">' + n + '</span></button>';
+}
+function brandChipHTML(id, label, n) {
+  return '<button class="chip sm' + (currentBrand === id ? ' active' : '') + '" onclick="setBrand(\'' + esc(id) + '\')">' + esc(label) + '<span class="n">' + n + '</span></button>';
+}
+function renderBrandRow() {
+  const row = document.getElementById('brandRow');
+  const cat = catById(currentFilter);
+  const brands = cat && cat.brands ? cat.brands : [];
+  const c = cat ? brandCounts(cat.id) : {};
+  const admin = isAdmin();
+  const shown = brands.filter(b => admin || c[b.id]);
+  if (!cat || (!shown.length && !c.__other)) { row.style.display = 'none'; currentBrand = ''; return; }
+  if (currentBrand && currentBrand !== '__other' && !shown.some(b => b.id === currentBrand)) currentBrand = '';
+  if (currentBrand === '__other' && !c.__other) currentBrand = '';
+  let total = 0; Object.keys(c).forEach(k => total += c[k]);
+  let html = '<span class="lbl">' + L('Brand', '品牌') + '</span>' + brandChipHTML('', L('All', '全部'), total);
+  shown.forEach(b => { html += brandChipHTML(b.id, b.name, c[b.id] || 0); });
+  if (c.__other) html += brandChipHTML('__other', L('Other brands', '其他品牌'), c.__other);
+  row.innerHTML = html;
+  row.style.display = 'flex';
+}
+function setBrand(b) {
+  currentBrand = b;
+  renderBrandRow();
+  renderGrid();
 }
 function renderChips() {
   const c = counts();
@@ -633,15 +692,21 @@ function renderChips() {
   const extra = (show(c.__new) ? chipHTML('__new', L('New In', '新品'), c.__new) : '') + (show(c.__sale) ? chipHTML('__sale', L('Sale', '特价'), c.__sale) : '');
   if (extra) html += '<span class="chip-sep"></span>' + extra;
   document.getElementById('chips').innerHTML = html;
+  renderBrandRow();
 }
 function filterTitle() {
   if (currentFilter === 'all') return L('All Pieces', '全部商品');
   if (currentFilter === '__none') return L('Uncategorized', '未分类');
   if (currentFilter === '__new') return L('New In', '新品');
   if (currentFilter === '__sale') return L('Sale', '特价');
-  return catName(catById(currentFilter));
+  const cat = catById(currentFilter);
+  let t = catName(cat);
+  if (currentBrand === '__other') t += ' · ' + L('Other brands', '其他品牌');
+  else if (currentBrand) { const b = (cat.brands || []).find(x => x.id === currentBrand); if (b) t += ' · ' + b.name; }
+  return t;
 }
 function setFilter(f) {
+  if (f !== currentFilter) currentBrand = '';
   currentFilter = f;
   renderChips();
   renderGrid();
@@ -658,7 +723,13 @@ function getFiltered() {
   if (currentFilter === '__new') list = list.filter(p => p.badge === 'new');
   else if (currentFilter === '__sale') list = list.filter(p => p.badge === 'sale');
   else if (currentFilter === '__none') list = list.filter(p => !productCat(p));
-  else if (currentFilter !== 'all') list = list.filter(p => p.cat === currentFilter);
+  else if (currentFilter !== 'all') {
+    list = list.filter(p => p.cat === currentFilter);
+    const cat = catById(currentFilter);
+    const known = id => cat && (cat.brands || []).some(b => b.id === id);
+    if (currentBrand === '__other') list = list.filter(p => !known(p.brandId));
+    else if (currentBrand) list = list.filter(p => p.brandId === currentBrand);
+  }
   if (currentSearch) list = list.filter(p => (p.brand + ' ' + p.name + ' ' + (p.desc || '') + ' ' + catName(productCat(p))).toLowerCase().includes(currentSearch));
   if (currentSort === 'newest') list.sort((a,b) => b.ts - a.ts);
   else if (currentSort === 'brand') list.sort((a,b) => (a.brand + a.name).localeCompare(b.brand + b.name));
@@ -729,6 +800,49 @@ function fillCatSelect(selected) {
   sel.value = known ? selected : '';
   sel.classList.remove('invalid');
 }
+// Brand picker: the selected category's brands + "new brand" (shows a text box)
+function fillBrandSel(catId, brandId, brandText) {
+  const sel = document.getElementById('f-brand-sel');
+  const input = document.getElementById('f-brand');
+  const cat = catById(catId);
+  const brands = cat && cat.brands ? cat.brands : [];
+  let html = '';
+  if (cat && brands.length) html += '<option value="">— 请选择品牌 —</option>';
+  html += brands.map(b => '<option value="' + esc(b.id) + '">' + esc(b.name) + '</option>').join('');
+  html += '<option value="__new">＋ 新品牌…</option>';
+  sel.innerHTML = html;
+  const has = brands.some(b => b.id === brandId);
+  if (has) sel.value = brandId;
+  else if (brandText || !brands.length) sel.value = '__new';
+  else sel.value = '';
+  input.value = has ? '' : (brandText || '');
+  sel.classList.remove('invalid'); input.classList.remove('invalid');
+  onBrandSel(true);
+}
+function onBrandSel(silent) {
+  const sel = document.getElementById('f-brand-sel');
+  const input = document.getElementById('f-brand');
+  const isNew = sel.value === '__new';
+  input.style.display = isNew ? 'block' : 'none';
+  if (isNew && !silent) input.focus();
+}
+function onCatChange() {
+  const sel = document.getElementById('f-brand-sel');
+  const text = sel.value === '__new' ? document.getElementById('f-brand').value
+    : (sel.value ? sel.options[sel.selectedIndex].text : '');
+  const catId = document.getElementById('f-cat').value;
+  // keep the same brand if the new category has it too
+  const cat = catById(catId);
+  const match = cat && (cat.brands || []).find(b => b.name.toLowerCase() === text.trim().toLowerCase());
+  fillBrandSel(catId, match ? match.id : '', match ? '' : text);
+  document.getElementById('f-cat').classList.remove('invalid');
+}
+function readBrand() {
+  const sel = document.getElementById('f-brand-sel');
+  if (sel.value === '__new') return { brand: document.getElementById('f-brand').value.trim(), brandId: '' };
+  if (!sel.value) return { brand: '', brandId: '' };
+  return { brand: sel.options[sel.selectedIndex].text, brandId: sel.value };
+}
 function openModal(p) {
   editingId = p ? p.id : null;
   pendingImgs = p ? (p.imgs || []).map(url => ({ url })) : [];
@@ -736,7 +850,8 @@ function openModal(p) {
   // new product: pre-select the category being browsed
   const browsing = catById(currentFilter) ? currentFilter : '';
   fillCatSelect(p ? p.cat : browsing);
-  document.getElementById('f-brand').value = p ? p.brand : '';
+  const browsingBrand = browsing && currentBrand !== '__other' ? currentBrand : '';
+  fillBrandSel(p ? p.cat : browsing, p ? p.brandId : browsingBrand, p ? p.brand : '');
   document.getElementById('f-name').value = p ? p.name : '';
   document.getElementById('f-desc').value = p ? (p.desc || '') : '';
   document.getElementById('f-price').value = p && p.price ? p.price : '';
@@ -786,10 +901,13 @@ function closeModal() {
   editingId = null;
 }
 async function saveProduct() {
-  const brandEl = document.getElementById('f-brand'), nameEl = document.getElementById('f-name'), catEl = document.getElementById('f-cat');
+  const nameEl = document.getElementById('f-name'), catEl = document.getElementById('f-cat');
+  const brandSel = document.getElementById('f-brand-sel'), brandEl = document.getElementById('f-brand');
   const status = document.getElementById('saveStatus');
-  const brand = brandEl.value.trim(), name = nameEl.value.trim(), cat = catEl.value;
-  brandEl.classList.toggle('invalid', !brand);
+  const { brand, brandId } = readBrand();
+  const name = nameEl.value.trim(), cat = catEl.value;
+  brandSel.classList.toggle('invalid', !brand && brandSel.value !== '__new');
+  brandEl.classList.toggle('invalid', !brand && brandSel.value === '__new');
   nameEl.classList.toggle('invalid', !name);
   catEl.classList.toggle('invalid', !cat && categories.length > 0);
   if (!brand || !name || (!cat && categories.length)) {
@@ -816,7 +934,7 @@ async function saveProduct() {
     const p = {
       id: editingId || Date.now(),
       imgs: pendingImgs.map(img => img.url),
-      brand, name, cat,
+      brand, brandId, name, cat,
       desc: document.getElementById('f-desc').value.trim(),
       price: parseInt(document.getElementById('f-price').value) || 0,
       badge: document.getElementById('f-status').value,
@@ -848,28 +966,58 @@ function editFromDetail() {
   if (p) openModal(p);
 }
 
-// ---------- CATEGORY MANAGER ----------
+// ---------- CATEGORY + BRAND MANAGER ----------
 function openCats() {
-  catDraft = categories.map(c => ({ ...c }));
+  catDraft = categories.map(c => ({ ...c, brands: (c.brands || []).map(b => ({ ...b })) }));
+  openBrandCats.clear();
+  if (catById(currentFilter)) openBrandCats.add(currentFilter);
   renderCatList();
   const st = document.getElementById('catStatus'); st.textContent = ''; st.classList.remove('err');
   document.getElementById('catOverlay').classList.add('open');
 }
 function closeCats() { document.getElementById('catOverlay').classList.remove('open'); }
+function brandProductCounts() {
+  const c = {};
+  products.forEach(p => { if (p.brandId) c[p.brandId] = (c[p.brandId] || 0) + 1; });
+  return c;
+}
 function renderCatList() {
   const c = counts();
+  const bc = brandProductCounts();
   const el = document.getElementById('catList');
   if (!catDraft.length) { el.innerHTML = '<div class="cat-empty">还没有分类，点下面「新增分类」</div>'; return; }
-  el.innerHTML = catDraft.map((cat, i) =>
-    '<div class="cat-row">' +
+  el.innerHTML = catDraft.map((cat, i) => {
+    const open = openBrandCats.has(cat.id);
+    let h = '<div class="cat-row">' +
       '<span class="cat-idx">' + (i + 1) + '</span>' +
       '<input value="' + esc(cat.en) + '" placeholder="English" oninput="catDraft[' + i + '].en=this.value" aria-label="English name"/>' +
       '<input value="' + esc(cat.zh) + '" placeholder="中文" oninput="catDraft[' + i + '].zh=this.value" aria-label="中文名称"/>' +
       '<span class="cat-count">' + (c[cat.id] || 0) + ' 件</span>' +
+      '<button class="brand-toggle' + (open ? ' open' : '') + '" onclick="toggleBrands(' + i + ')" title="编辑这个分类的品牌"><i class="ti ti-' + (open ? 'chevron-up' : 'tag') + '" aria-hidden="true"></i>品牌 ' + cat.brands.length + '</button>' +
       '<button class="icon-btn" onclick="moveCat(' + i + ',-1)" ' + (i ? '' : 'disabled') + ' title="上移" aria-label="Move up"><i class="ti ti-arrow-up" aria-hidden="true"></i></button>' +
       '<button class="icon-btn" onclick="moveCat(' + i + ',1)" ' + (i < catDraft.length - 1 ? '' : 'disabled') + ' title="下移" aria-label="Move down"><i class="ti ti-arrow-down" aria-hidden="true"></i></button>' +
-      '<button class="icon-btn danger" onclick="delCat(' + i + ')" title="删除" aria-label="Delete"><i class="ti ti-trash" aria-hidden="true"></i></button>' +
-    '</div>').join('');
+      '<button class="icon-btn danger" onclick="delCat(' + i + ')" title="删除分类" aria-label="Delete"><i class="ti ti-trash" aria-hidden="true"></i></button>' +
+    '</div>';
+    if (open) {
+      h += '<div class="brand-sub"><div class="brand-sub-title">「' + esc(cat.zh || cat.en || '新分类') + '」的品牌</div>';
+      if (!cat.brands.length) h += '<div class="field-hint" style="margin-bottom:8px">还没有品牌</div>';
+      h += cat.brands.map((b, j) =>
+        '<div class="brand-ed">' +
+          '<input value="' + esc(b.name) + '" placeholder="品牌名，如 Hermès" oninput="catDraft[' + i + '].brands[' + j + '].name=this.value" aria-label="Brand name"/>' +
+          '<span class="cat-count">' + (bc[b.id] || 0) + ' 件</span>' +
+          '<button class="icon-btn" onclick="moveBrand(' + i + ',' + j + ',-1)" ' + (j ? '' : 'disabled') + ' title="上移" aria-label="Move up"><i class="ti ti-arrow-up" aria-hidden="true"></i></button>' +
+          '<button class="icon-btn" onclick="moveBrand(' + i + ',' + j + ',1)" ' + (j < cat.brands.length - 1 ? '' : 'disabled') + ' title="下移" aria-label="Move down"><i class="ti ti-arrow-down" aria-hidden="true"></i></button>' +
+          '<button class="icon-btn danger" onclick="delBrand(' + i + ',' + j + ')" title="删除品牌" aria-label="Delete brand"><i class="ti ti-trash" aria-hidden="true"></i></button>' +
+        '</div>').join('');
+      h += '<button class="brand-add" onclick="addBrand(' + i + ')"><i class="ti ti-plus" aria-hidden="true"></i> 新增品牌</button></div>';
+    }
+    return h;
+  }).join('');
+}
+function toggleBrands(i) {
+  const id = catDraft[i].id;
+  if (openBrandCats.has(id)) openBrandCats.delete(id); else openBrandCats.add(id);
+  renderCatList();
 }
 function moveCat(i, d) {
   const j = i + d;
@@ -885,14 +1033,42 @@ function delCat(i) {
   renderCatList();
 }
 function addCat() {
-  catDraft.push({ id: 'c' + Date.now().toString(36), en: '', zh: '' });
+  const id = 'c' + Date.now().toString(36);
+  catDraft.push({ id, en: '', zh: '', brands: [] });
   renderCatList();
-  const inputs = document.querySelectorAll('#catList .cat-row:last-child input');
-  if (inputs[1]) inputs[1].focus();
+  const rows = document.querySelectorAll('#catList .cat-row');
+  const last = rows[rows.length - 1];
+  if (last) last.querySelectorAll('input')[1].focus();
+}
+function addBrand(i) {
+  catDraft[i].brands.push({ id: 'b' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), name: '' });
+  openBrandCats.add(catDraft[i].id);
+  renderCatList();
+  const subs = document.querySelectorAll('#catList .brand-sub');
+  // focus the new (last) brand input of this category
+  const rowsBefore = catDraft.slice(0, i).filter(c => openBrandCats.has(c.id)).length;
+  const sub = subs[rowsBefore];
+  if (sub) { const ins = sub.querySelectorAll('.brand-ed input'); if (ins.length) ins[ins.length - 1].focus(); }
+}
+function moveBrand(i, j, d) {
+  const list = catDraft[i].brands, k = j + d;
+  if (k < 0 || k >= list.length) return;
+  [list[j], list[k]] = [list[k], list[j]];
+  renderCatList();
+}
+function delBrand(i, j) {
+  const b = catDraft[i].brands[j];
+  const n = brandProductCounts()[b.id] || 0;
+  if (n && !confirm('「' + b.name + '」有 ' + n + ' 件商品。删除品牌后这些商品不会删除，会显示在「其他品牌」里。确定删除？')) return;
+  catDraft[i].brands.splice(j, 1);
+  renderCatList();
 }
 async function saveCats() {
   const st = document.getElementById('catStatus');
-  const list = catDraft.map(c => ({ id: c.id, en: (c.en || '').trim(), zh: (c.zh || '').trim() })).filter(c => c.en || c.zh);
+  const list = catDraft
+    .map(c => ({ id: c.id, en: (c.en || '').trim(), zh: (c.zh || '').trim(),
+                 brands: c.brands.map(b => ({ id: b.id, name: (b.name || '').trim() })).filter(b => b.name) }))
+    .filter(c => c.en || c.zh);
   const btn = document.getElementById('catSaveBtn');
   btn.disabled = true; st.classList.remove('err'); st.textContent = '保存中…';
   try {

@@ -1,5 +1,5 @@
 import { isAdmin, json } from '../lib/auth.js';
-import { readData, writeData, deleteImages } from '../lib/store.js';
+import { readData, writeData, deleteImages, attachBrand } from '../lib/store.js';
 
 const BADGES = ['', 'new', 'sale', 'sold'];
 
@@ -33,8 +33,10 @@ export async function PUT(request) {
   if (!isAdmin(request)) return json({ error: 'Not logged in' }, 401);
   try {
     const data = await readData();
-    const p = clean(await request.json(), new Set(data.categories.map(c => c.id)));
+    const body = await request.json();
+    const p = clean(body, new Set(data.categories.map(c => c.id)));
     if (!p.brand || !p.name) return json({ error: 'Brand and name are required' }, 400);
+    attachBrand(data, p, String(body.brandId || ''));
     const i = data.products.findIndex(x => x.id === p.id);
     let removed = [];
     if (i >= 0) {
