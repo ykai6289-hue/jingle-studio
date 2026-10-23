@@ -12,6 +12,7 @@ function clean(p, catIds) {
     brand: str(p.brand, 80),
     name: str(p.name, 160),
     desc: str(p.desc, 4000),
+    keywords: str(p.keywords, 500),
     price: Math.max(0, parseInt(p.price) || 0),
     cat: catIds.has(p.cat) ? p.cat : '',
     badge: BADGES.includes(p.badge) ? p.badge : '',

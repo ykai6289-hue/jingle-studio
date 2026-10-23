@@ -102,9 +102,18 @@ body.admin .admin-only.flex{display:flex !important}
 .chip.sm.active{background:rgba(184,154,90,0.14);color:var(--gold-light);border-color:var(--gold)}
 .chip.sm.active .n{background:rgba(184,154,90,0.18);color:var(--gold-light)}
 .search{position:relative}
-.search i{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:15px;pointer-events:none}
-.search input{width:200px;padding:8px 12px 8px 32px;background:var(--bg2);border:1px solid var(--border2);color:var(--text);font-size:12px;border-radius:3px;outline:none}
-.search input:focus{border-color:var(--gold)}
+.search .ti-search{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--gold);font-size:16px;pointer-events:none}
+.search input{width:300px;padding:10px 36px 10px 36px;background:var(--bg2);border:1px solid #4a3c1d;color:var(--text);font-size:13px;border-radius:20px;outline:none;transition:border-color 0.2s, box-shadow 0.2s}
+.search input::placeholder{color:var(--muted)}
+.search input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,154,90,0.15)}
+.search input::-webkit-search-cancel-button{display:none}
+.search-clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:26px;height:26px;border-radius:50%;border:none;background:var(--bg3);color:var(--text);font-size:14px;cursor:pointer;display:none;align-items:center;justify-content:center}
+.search-clear:hover{color:var(--gold-light)}
+.search.has-text .search-clear{display:flex}
+.search-note{font-size:12px;color:var(--muted);margin:-6px 0 14px}
+.search-note button{background:none;border:none;color:var(--gold-light);font-size:12px;cursor:pointer;text-decoration:underline;padding:0 2px}
+.kw-tags{display:flex;flex-wrap:wrap;gap:6px}
+.kw-tag{font-size:11px;color:var(--muted);border:1px solid var(--border2);padding:2px 8px;border-radius:10px}
 .sort-sel{padding:8px 10px;background:var(--bg2);border:1px solid var(--border2);color:var(--text);font-size:12px;cursor:pointer;border-radius:3px;outline:none}
 
 /* GRID */
@@ -335,9 +344,10 @@ footer{padding:32px var(--pad);border-top:1px solid var(--border);display:flex;a
 <div class="toolbar" id="shop">
   <div class="chips" id="chips"></div>
   <div class="tool-right">
-    <div class="search">
+    <div class="search" id="searchBox">
       <i class="ti ti-search" aria-hidden="true"></i>
-      <input type="search" id="searchInput" placeholder="Search brand or name…" oninput="setSearch(this.value)" aria-label="Search"/>
+      <input type="search" id="searchInput" placeholder="Search brand, name, keyword…" oninput="setSearch(this.value)" onkeydown="if(event.key==='Escape')clearSearch()" aria-label="Search products" autocomplete="off"/>
+      <button class="search-clear" onclick="clearSearch()" title="Clear" aria-label="Clear search"><i class="ti ti-x" aria-hidden="true"></i></button>
     </div>
     <select class="sort-sel" id="sortSel" onchange="setSort(this.value)" aria-label="Sort">
       <option value="default">Featured</option>
@@ -353,6 +363,7 @@ footer{padding:32px var(--pad);border-top:1px solid var(--border);display:flex;a
     <div class="grid-title" id="gridTitle">All</div>
     <div class="result-label" id="resultLabel"></div>
   </div>
+  <div class="search-note" id="searchNote" style="display:none"></div>
   <div class="product-grid" id="productGrid"></div>
 </main>
 
@@ -402,6 +413,11 @@ footer{padding:32px var(--pad);border-top:1px solid var(--border);display:flex;a
     <div class="form-group">
       <label for="f-desc">商品描述 Description</label>
       <textarea id="f-desc" placeholder="材质、颜色、尺码、成色…（可以写多行）"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="f-keywords">搜索关键词 Keywords（客户看不到，但能搜到）</label>
+      <input type="text" id="f-keywords" placeholder="例如：货号 DD1391-100, 红色, 蛇纹, Kobe, 科比"/>
+      <span class="field-hint">用逗号或空格分隔。适合填货号、颜色、材质、中英文别名，方便你和客户搜索。</span>
     </div>
     <div class="form-group">
       <label for="f-price">价格（港币，仅自己可见）Price HKD — admin only</label>
@@ -613,7 +629,7 @@ function setLang(lang, btn) {
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   document.querySelectorAll('.t[data-' + lang + ']').forEach(el => { el.innerHTML = el.dataset[lang]; });
-  document.getElementById('searchInput').placeholder = L('Search brand or name…', '搜索品牌或名称…');
+  document.getElementById('searchInput').placeholder = L('Search brand, name, keyword…', '搜索品牌、名称、关键词、货号…');
   const s = document.getElementById('sortSel').options;
   s[0].text = L('Featured', '推荐'); s[1].text = L('Newest', '最新'); s[2].text = L('Brand A–Z', '品牌 A–Z');
   renderAll();
@@ -655,14 +671,14 @@ function brandCounts(catId) {
   return c;
 }
 function chipHTML(id, label, n) {
-  return '<button class="chip' + (currentFilter === id ? ' active' : '') + '" onclick="setFilter(\'' + esc(id) + '\')">' + esc(label) + '<span class="n">' + n + '</span></button>';
+  return '<button class="chip' + (currentFilter === id && !currentSearch ? ' active' : '') + '" onclick="setFilter(\'' + esc(id) + '\')">' + esc(label) + '<span class="n">' + n + '</span></button>';
 }
 function brandChipHTML(id, label, n) {
   return '<button class="chip sm' + (currentBrand === id ? ' active' : '') + '" onclick="setBrand(\'' + esc(id) + '\')">' + esc(label) + '<span class="n">' + n + '</span></button>';
 }
 function renderBrandRow() {
   const row = document.getElementById('brandRow');
-  const cat = catById(currentFilter);
+  const cat = currentSearch ? null : catById(currentFilter);
   const brands = cat && cat.brands ? cat.brands : [];
   const c = cat ? brandCounts(cat.id) : {};
   const admin = isAdmin();
@@ -700,6 +716,7 @@ function renderChips() {
   renderBrandRow();
 }
 function filterTitle() {
+  if (currentSearch) return L('Search: “' + currentSearch + '”', '搜索「' + currentSearch + '」');
   if (currentFilter === 'all') return L('All Pieces', '全部商品');
   if (currentFilter === '__none') return L('Uncategorized', '未分类');
   if (currentFilter === '__new') return L('New In', '新品');
@@ -711,6 +728,7 @@ function filterTitle() {
   return t;
 }
 function setFilter(f) {
+  if (currentSearch) { document.getElementById('searchInput').value = ''; currentSearch = ''; setSearch(''); }
   if (f !== currentFilter) currentBrand = '';
   currentFilter = f;
   renderChips();
@@ -720,12 +738,38 @@ function goShop(f) {
   setFilter(f);
   document.getElementById('shop').scrollIntoView({ behavior: 'smooth' });
 }
-function setSearch(v) { currentSearch = v.trim().toLowerCase(); renderGrid(); }
+// ---------- SEARCH ----------
+// Case- and accent-insensitive ("hermes" finds "Hermès"); every word must match.
+const norm = s => String(s ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+function searchText(p) {
+  const cat = productCat(p);
+  const badge = { new: 'new in 新品', sale: 'sale 特价', sold: 'sold 已售' }[p.badge] || '';
+  return norm([p.brand, p.name, p.desc, p.keywords, cat && cat.en, cat && cat.zh, badge].join(' '));
+}
+function searchTerms() { return norm(currentSearch).split(/[\s,，、]+/).filter(Boolean); }
+function matches(p) { const t = searchText(p); return searchTerms().every(w => t.includes(w)); }
+function setSearch(v) {
+  currentSearch = v.trim();
+  document.getElementById('searchBox').classList.toggle('has-text', !!v);
+  // keep the search in the address bar so the link can be shared (?q=birkin)
+  try {
+    const u = new URL(location.href);
+    if (currentSearch) u.searchParams.set('q', currentSearch); else u.searchParams.delete('q');
+    history.replaceState(null, '', u.pathname + u.search + u.hash);
+  } catch(e){}
+  renderChips();
+  renderGrid();
+}
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  setSearch('');
+}
 function setSort(v) { currentSort = v; renderGrid(); }
 
 function getFiltered() {
   let list = products.slice();
-  if (currentFilter === '__new') list = list.filter(p => p.badge === 'new');
+  if (currentSearch) list = list.filter(matches);
+  else if (currentFilter === '__new') list = list.filter(p => p.badge === 'new');
   else if (currentFilter === '__sale') list = list.filter(p => p.badge === 'sale');
   else if (currentFilter === '__none') list = list.filter(p => !productCat(p));
   else if (currentFilter !== 'all') {
@@ -735,7 +779,6 @@ function getFiltered() {
     if (currentBrand === '__other') list = list.filter(p => !known(p.brandId));
     else if (currentBrand) list = list.filter(p => p.brandId === currentBrand);
   }
-  if (currentSearch) list = list.filter(p => (p.brand + ' ' + p.name + ' ' + (p.desc || '') + ' ' + catName(productCat(p))).toLowerCase().includes(currentSearch));
   if (currentSort === 'newest') list.sort((a,b) => b.ts - a.ts);
   else if (currentSort === 'brand') list.sort((a,b) => (a.brand + a.name).localeCompare(b.brand + b.name));
   return list;
@@ -754,9 +797,14 @@ function renderGrid() {
   document.getElementById('gridTitle').textContent = filterTitle();
   document.getElementById('resultLabel').textContent = list.length + ' ' + L(list.length === 1 ? 'piece' : 'pieces', '件');
   document.getElementById('stat-count').textContent = products.length;
+  const note = document.getElementById('searchNote');
+  if (currentSearch) {
+    note.innerHTML = L('Searching all categories', '在全部分类中搜索') + ' · <button onclick="clearSearch()">' + L('Clear search', '清除搜索') + '</button>';
+    note.style.display = 'block';
+  } else note.style.display = 'none';
   if (!list.length) {
-    let text = L('No pieces found', '没有找到商品');
-    let sub = currentSearch ? L('Try a different search', '换个关键词试试') : (isAdmin() ? '在上方上传图片添加商品' : L('New pieces coming soon', '新品即将上架'));
+    let text = currentSearch ? L('Nothing matches “' + esc(currentSearch) + '”', '没有找到「' + esc(currentSearch) + '」') : L('No pieces found', '没有找到商品');
+    let sub = currentSearch ? L('Try fewer or different words, e.g. a brand or colour', '试试更少或不同的词，比如品牌、颜色、货号') : (isAdmin() ? '在上方上传图片添加商品' : L('New pieces coming soon', '新品即将上架'));
     if (loadError) { text = L('Could not load', '加载失败'); sub = L('Please refresh the page', '请刷新页面'); }
     grid.innerHTML = '<div class="empty-state"><div class="empty-icon"><i class="ti ti-photo-off" aria-hidden="true"></i></div><div class="empty-text">' + text + '</div><div class="empty-sub">' + sub + '</div></div>';
     return;
@@ -859,6 +907,7 @@ function openModal(p) {
   fillBrandSel(p ? p.cat : browsing, p ? p.brandId : browsingBrand, p ? p.brand : '');
   document.getElementById('f-name').value = p ? p.name : '';
   document.getElementById('f-desc').value = p ? (p.desc || '') : '';
+  document.getElementById('f-keywords').value = p ? (p.keywords || '') : '';
   document.getElementById('f-price').value = p && p.price ? p.price : '';
   document.getElementById('f-status').value = p ? (p.badge || '') : '';
   document.getElementById('modalTitle').textContent = p ? '编辑商品' : '添加新商品';
@@ -942,6 +991,7 @@ async function saveProduct() {
       imgs: pendingImgs.map(img => img.url),
       brand, brandId, name, cat,
       desc: document.getElementById('f-desc').value.trim(),
+      keywords: document.getElementById('f-keywords').value.trim(),
       price: parseInt(document.getElementById('f-price').value) || 0,
       badge: document.getElementById('f-status').value,
       ts: old ? old.ts : Date.now(),
@@ -1104,6 +1154,7 @@ function openDetail(id) {
   document.getElementById('dMeta').innerHTML =
     '<div class="detail-meta-row"><span class="detail-meta-key">' + L('Category', '分类') + '</span><span class="detail-meta-val">' + esc(catName(productCat(p))) + '</span></div>' +
     '<div class="detail-meta-row"><span class="detail-meta-key">' + L('Brand', '品牌') + '</span><span class="detail-meta-val">' + esc(p.brand) + '</span></div>' +
+    (isAdmin() && p.keywords ? '<div class="detail-meta-row"><span class="detail-meta-key">关键词（仅自己可见）</span><span class="detail-meta-val kw-tags">' + p.keywords.split(/[,，、]+/).map(k => k.trim()).filter(Boolean).map(k => '<span class="kw-tag">' + esc(k) + '</span>').join('') + '</span></div>' : '') +
     (isAdmin() && p.price ? '<div class="detail-meta-row"><span class="detail-meta-key">价格（仅自己可见）</span><span class="detail-meta-val">HKD ' + p.price.toLocaleString() + '</span></div>' : '');
   renderGallery();
   document.getElementById('detailOverlay').classList.add('open');
@@ -1163,7 +1214,7 @@ document.getElementById('detailOverlay').addEventListener('click', function(e){ 
 // (clicking outside or pressing Esc does nothing), and ask before throwing away changes.
 let modalSnapshot = '', catSnapshot = '';
 function modalState() {
-  return JSON.stringify([pendingImgs.map(i => i.url || i.preview), ['f-cat','f-brand-sel','f-brand','f-name','f-status','f-desc','f-price'].map(id => document.getElementById(id).value)]);
+  return JSON.stringify([pendingImgs.map(i => i.url || i.preview), ['f-cat','f-brand-sel','f-brand','f-name','f-status','f-desc','f-keywords','f-price'].map(id => document.getElementById(id).value)]);
 }
 function requestCloseModal() {
   if (modalState() !== modalSnapshot && !confirm('有未保存的内容，确定关闭吗？')) return;
@@ -1185,6 +1236,16 @@ document.addEventListener('keydown', e => {
 syncNavHeight();
 if (token) document.body.classList.add('admin');
 checkHash();
+try {
+  const q = new URLSearchParams(location.search).get('q');
+  if (q) { document.getElementById('searchInput').value = q; currentSearch = q.trim(); document.getElementById('searchBox').classList.add('has-text'); }
+} catch(e){}
+document.addEventListener('keydown', e => {
+  const tag = (e.target.tagName || '').toLowerCase();
+  if (e.key === '/' && !['input','textarea','select'].includes(tag) && !document.querySelector('.modal-overlay.open,.detail-overlay.open')) {
+    e.preventDefault(); document.getElementById('searchInput').focus();
+  }
+});
 renderAll();
 loadProducts();
 </script>
