@@ -149,7 +149,10 @@ body.admin .admin-only.flex{display:flex !important}
 /* MODALS */
 .modal-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:16px}
 .modal-overlay.open{display:flex}
-.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:6px;padding:28px;width:560px;max-width:100%;max-height:92vh;overflow-y:auto}
+.modal{position:relative;background:var(--bg2);border:1px solid var(--border2);border-radius:6px;padding:28px;width:560px;max-width:100%;max-height:92vh;overflow-y:auto}
+.modal-x{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;z-index:2}
+.modal-x:hover{border-color:var(--gold);color:var(--gold-light)}
+.modal-title{padding-right:44px}
 .modal-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--text);margin-bottom:6px}
 .modal-sub{font-size:12px;color:var(--muted);margin-bottom:20px;line-height:1.6}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
@@ -356,6 +359,7 @@ footer{padding:32px var(--pad);border-top:1px solid var(--border);display:flex;a
 <!-- ADD / EDIT PRODUCT -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-x" onclick="requestCloseModal()" title="关闭" aria-label="关闭"><i class="ti ti-x" aria-hidden="true"></i></button>
     <div class="modal-title" id="modalTitle">添加新商品</div>
     <div class="modal-sub">第一张图是封面。点击其他图片可以把它设为封面。</div>
     <div class="form-group">
@@ -405,7 +409,7 @@ footer{padding:32px var(--pad);border-top:1px solid var(--border);display:flex;a
     </div>
     <div class="btn-row">
       <span class="save-status" id="saveStatus"></span>
-      <button class="btn btn-ghost" onclick="closeModal()">取消</button>
+      <button class="btn btn-ghost" onclick="requestCloseModal()">取消</button>
       <button class="btn btn-primary" id="saveBtn" onclick="saveProduct()">保存</button>
     </div>
   </div>
@@ -414,6 +418,7 @@ footer{padding:32px var(--pad);border-top:1px solid var(--border);display:flex;a
 <!-- CATEGORY MANAGER -->
 <div class="modal-overlay" id="catOverlay">
   <div class="modal" style="width:720px" role="dialog" aria-modal="true" aria-labelledby="catTitle">
+    <button class="modal-x" onclick="requestCloseCats()" title="关闭" aria-label="关闭"><i class="ti ti-x" aria-hidden="true"></i></button>
     <div class="modal-title" id="catTitle">管理分类和品牌</div>
     <div class="modal-sub">分类和品牌按这里的顺序显示在网站上，用 ↑ ↓ 调整。点「品牌」可以编辑这个分类下的品牌；品牌改名后，商品上的品牌名会一起更新。删除分类或品牌都不会删除商品。改完记得点保存。</div>
     <div class="cat-head"><span></span><span>English</span><span>中文</span><span class="c-count" style="text-align:right">商品</span><span></span><span></span><span></span><span></span></div>
@@ -422,7 +427,7 @@ footer{padding:32px var(--pad);border-top:1px solid var(--border);display:flex;a
     <div class="field-hint" style="margin:-10px 0 14px">只改了品牌也要点「保存分类」。</div>
     <div class="btn-row">
       <span class="save-status" id="catStatus"></span>
-      <button class="btn btn-ghost" onclick="closeCats()">取消</button>
+      <button class="btn btn-ghost" onclick="requestCloseCats()">取消</button>
       <button class="btn btn-primary" id="catSaveBtn" onclick="saveCats()">保存分类</button>
     </div>
   </div>
@@ -861,6 +866,7 @@ function openModal(p) {
   const st = document.getElementById('saveStatus'); st.textContent = ''; st.classList.remove('err');
   document.querySelectorAll('#modalOverlay .invalid').forEach(el => el.classList.remove('invalid'));
   document.getElementById('modalOverlay').classList.add('open');
+  modalSnapshot = modalState();
 }
 function rebuildModalImgs() {
   const row = document.getElementById('modalImgRow');
@@ -974,6 +980,7 @@ function openCats() {
   renderCatList();
   const st = document.getElementById('catStatus'); st.textContent = ''; st.classList.remove('err');
   document.getElementById('catOverlay').classList.add('open');
+  catSnapshot = JSON.stringify(catDraft);
 }
 function closeCats() { document.getElementById('catOverlay').classList.remove('open'); }
 function brandProductCounts() {
@@ -1152,10 +1159,22 @@ function closeDetail() {
 })();
 
 document.getElementById('detailOverlay').addEventListener('click', function(e){ if (e.target === this) closeDetail(); });
-document.getElementById('modalOverlay').addEventListener('click', function(e){ if (e.target === this) closeModal(); });
-document.getElementById('catOverlay').addEventListener('click', function(e){ if (e.target === this) closeCats(); });
+// The product and category windows only close with their ✕ / 取消 buttons
+// (clicking outside or pressing Esc does nothing), and ask before throwing away changes.
+let modalSnapshot = '', catSnapshot = '';
+function modalState() {
+  return JSON.stringify([pendingImgs.map(i => i.url || i.preview), ['f-cat','f-brand-sel','f-brand','f-name','f-status','f-desc','f-price'].map(id => document.getElementById(id).value)]);
+}
+function requestCloseModal() {
+  if (modalState() !== modalSnapshot && !confirm('有未保存的内容，确定关闭吗？')) return;
+  closeModal();
+}
+function requestCloseCats() {
+  if (JSON.stringify(catDraft) !== catSnapshot && !confirm('分类或品牌的修改还没保存，确定关闭吗？')) return;
+  closeCats();
+}
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeDetail(); closeModal(); closeLogin(); closeCats(); }
+  if (e.key === 'Escape') { closeDetail(); closeLogin(); }
   if (detailProduct) {
     if (e.key === 'ArrowLeft') galleryNav(-1);
     if (e.key === 'ArrowRight') galleryNav(1);
