@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/trade", "destination": "/index.html" },
+    { "source": "/collection", "destination": "/index.html" },
+    { "source": "/stone", "destination": "/index.html" },
+    { "source": "/paper", "destination": "/index.html" },
+    { "source": "/tea", "destination": "/index.html" }
+  ]
+}

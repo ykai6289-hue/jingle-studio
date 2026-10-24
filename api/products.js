@@ -36,7 +36,7 @@ export async function PUT(request) {
     const data = await readData();
     const body = await request.json();
     const p = clean(body, new Set(data.categories.map(c => c.id)));
-    if (!p.brand || !p.name) return json({ error: 'Brand and name are required' }, 400);
+    if (!p.name) return json({ error: 'Name is required' }, 400);
     attachBrand(data, p, String(body.brandId || ''));
     const i = data.products.findIndex(x => x.id === p.id);
     let removed = [];

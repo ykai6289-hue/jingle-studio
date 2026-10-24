@@ -1,5 +1,5 @@
 import { isAdmin, json } from '../lib/auth.js';
-import { readData, writeData, newBrandId } from '../lib/store.js';
+import { readData, writeData, newBrandId, SECTION_IDS } from '../lib/store.js';
 
 // Admin: replace the whole category list (order = display order), each with
 // its own brand list. Renamed brands are copied onto their products.
@@ -31,7 +31,8 @@ export async function PUT(request) {
         brands.push({ id: bid, name });
         brandMap.set(bid, bid);
       }
-      categories.push({ id, en: en || zh, zh: zh || en, brands });
+      const section = SECTION_IDS.includes(c.section) ? c.section : 'fashion';
+      categories.push({ id, en: en || zh, zh: zh || en, section, brands });
     }
     const data = await readData();
     data.categories = categories;
