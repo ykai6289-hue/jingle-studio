@@ -650,14 +650,15 @@ body.admin .tile-hint{display:block}
 }
 
 /* soft transitions between home bands */
-.hm-tea{border-bottom:none}
+.hm-tea{border-bottom:none;border-top:none}
+.hm-why{padding-top:120px}
 .hm-tea .bgimg,.tea-hero .bgimg{-webkit-mask-image:linear-gradient(180deg,#000 72%,transparent 100%);mask-image:linear-gradient(180deg,#000 72%,transparent 100%)}
-.hm-sep{display:flex;align-items:center;justify-content:center;gap:18px;padding:56px var(--pad) 40px;color:var(--gold);font-size:11px}
+.hm-sep{display:flex;align-items:center;justify-content:center;gap:18px;padding:110px var(--pad) 90px;color:var(--gold);font-size:11px}
 .hm-sep::before,.hm-sep::after{content:'';height:1px;width:min(220px,28vw);background:linear-gradient(90deg,rgba(184,154,90,0),rgba(184,154,90,0.6))}
 .hm-sep::after{background:linear-gradient(270deg,rgba(184,154,90,0),rgba(184,154,90,0.6))}
 .hm-stone .bgimg{-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 180px,#000 calc(100% - 180px),transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 180px,#000 calc(100% - 180px),transparent 100%)}
 .hm-paper{border-top:none}
-@media (max-width:860px){.hm-sep{padding:36px var(--pad) 24px}.hm-stone .bgimg{-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 80px);mask-image:linear-gradient(180deg,transparent 0,#000 80px)}}
+@media (max-width:860px){.hm-sep{padding:64px var(--pad) 48px}.hm-stone .bgimg{-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 80px);mask-image:linear-gradient(180deg,transparent 0,#000 80px)}}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 </style>
@@ -1352,6 +1353,7 @@ function renderHome() {
       '<p class="tile-hint"><i class="ti ti-info-circle" aria-hidden="true"></i> 管理员：每张图片都可以点「上传图片」换成你自己的图（建议竖图 4:5，至少 800×1000px）。没传图时会自动用该分类最新的商品图。</p>' +
       '<div class="tiles">' + TILES.map(tileHTML).join('') + '</div></section>' +
     // TEA OFFER
+    '<div class="hm-sep" aria-hidden="true">◆</div>' +
     '<section class="hm-tea"><img class="bgimg" src="' + IMG('tea-range') + '" alt="' + esc(L('The six FuLu is Coming herbal teas with a purple gift bag', '养个福禄六款草本茶与紫色礼袋')) + '" loading="lazy"/><div class="fade"></div>' +
       '<div class="stamp"><small>' + L('UP TO', '最高') + '</small><b>' + TEA_MAX_OFF + '%</b><span>' + L('OFF', '优惠') + '</span></div>' +
       '<div class="txt"><div class="mk-eyebrow">' + esc(L('Herbal Tea · FuLu is Coming', '草本茶 · 养个福禄')) + '</div>' +
@@ -1369,6 +1371,7 @@ function renderHome() {
         '<div class="thumbs3">' + stoneThumbs + '</div>' +
         '<div class="mk-row" style="margin-top:6px">' + navA('/stone', L('Explore natural stone →', '了解天然石材 →')) + waBtn('Hello! I would like to request natural stone samples.', L('Request samples', '索取样品'), 'btn-ghost') + '</div></div></section>' +
     // PAPER
+    '<div class="hm-sep" aria-hidden="true">◆</div>' +
     '<section class="hm-paper"><div class="txt"><div class="mk-eyebrow">' + esc(L('Custom Paper Products', '定制纸制品')) + '</div>' +
         '<h2 class="mk-h2">' + L('Your logo on every<br><em>napkin, coaster and wrap.</em>', '把你的 logo<br><em>印在每一张纸品上。</em>') + '</h2>' +
         '<p class="mk-lead">' + esc(L('Made to order for bars, restaurants and hotels — your colours, sizes and print.', '为酒吧、餐厅和酒店按需定制：颜色、尺寸、印刷图案都由你定。')) + '</p>' +
