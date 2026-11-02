@@ -261,6 +261,14 @@ footer{padding:32px var(--pad);border-top:1px solid var(--border);display:flex;a
 .footer-links{display:flex;gap:18px;flex-wrap:wrap}
 .footer-links a{font-size:11px;color:var(--muted);text-decoration:none}
 .footer-links a:hover{color:var(--gold-light)}
+.footer-contact{display:flex;gap:18px;flex-wrap:wrap}
+.footer-contact a{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--text);text-decoration:none}
+.footer-contact a i{color:var(--gold);font-size:15px}
+.footer-contact a:hover{color:var(--gold-light)}
+.nav-links .sub.sub-right{left:auto;right:-16px}
+.nav-links .sub a{white-space:nowrap}
+.hm-cta .mail-line{font-size:12px;color:var(--muted)}
+.hm-cta .mail-line a{color:var(--gold-light)}
 
 @media (max-width:860px){
   :root{--pad:16px}
@@ -1028,6 +1036,7 @@ body.admin .tile-hint{display:block}
 <footer>
   <div class="footer-logo">Jingle Studio</div>
   <div class="footer-links" id="footerLinks"></div>
+  <div class="footer-contact"><a href="https://wa.me/85262861590" target="_blank" rel="noopener"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i>+852 6286 1590</a><a href="mailto:service@runavasto.com"><i class="ti ti-mail" aria-hidden="true"></i>service@runavasto.com</a></div>
   <div class="footer-copy">© 2026 Jingle Studio. All rights reserved.</div>
 </footer>
 
@@ -1066,6 +1075,9 @@ window.addEventListener('resize', syncNavHeight);
 // Draft copy — edit freely. Each entry: [English, 中文].
 const WA = 'https://wa.me/85262861590';
 const waText = msg => WA + '?text=' + encodeURIComponent(msg);
+const EMAIL = 'service@runavasto.com';
+const mailto = subject => 'mailto:' + EMAIL + (subject ? '?subject=' + encodeURIComponent(subject) : '');
+const mailBtn = (subject, cls) => '<a class="btn ' + (cls || 'btn-ghost') + ' btn-lg" href="' + mailto(subject) + '"><i class="ti ti-mail" aria-hidden="true"></i>' + esc(L('Email us', '发送邮件')) + '</a>';
 const SECTIONS = {
   fashion: {
     path: '/collection', icon: 'ti-hanger',
@@ -1191,19 +1203,20 @@ function navHTML(kind) {
   const coll = navLink(F.path, F.icon, F.name, currentView === 'section' && currentSection === 'fashion', !isLi);
   const trade = navLink(TRADE.path, TRADE.icon, TRADE.name, inTrade(), !isLi);
   const subs = LINE_SECTIONS.map(k => navLink(SECTIONS[k].path, SECTIONS[k].icon, SECTIONS[k].name, currentView === 'section' && currentSection === k, true, isLi ? '' : 'sub-item')).join('');
-  const contact = '<a href="' + WA + '" target="_blank" rel="noopener">' + (isLi ? '' : '<i class="ti ti-brand-whatsapp" aria-hidden="true"></i>') + esc(L('Contact', '联系我们')) + '</a>';
-  if (!isLi) return home + coll + trade + subs + contact;
+  const waItem = '<a href="' + WA + '" target="_blank" rel="noopener" class="' + (isLi ? '' : 'sub-item') + '"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i>WhatsApp · +852 6286 1590</a>';
+  const mailItem = '<a href="' + mailto('Enquiry from jingleluxurystudio.com') + '" class="' + (isLi ? '' : 'sub-item') + '"><i class="ti ti-mail" aria-hidden="true"></i>' + EMAIL + '</a>';
+  if (!isLi) return home + coll + trade + subs + '<a href="' + WA + '" target="_blank" rel="noopener"><i class="ti ti-message-circle" aria-hidden="true"></i>' + esc(L('Contact', '联系我们')) + '</a>' + waItem + mailItem;
+  const contact = '<a href="' + WA + '" target="_blank" rel="noopener">' + esc(L('Contact', '联系我们')) + '</a> <i class="ti ti-chevron-down caret" aria-hidden="true"></i><div class="sub sub-right"><div class="sub-inner">' + waItem + mailItem + '</div></div>';
   return '<li>' + home + '</li><li>' + coll + '</li>' +
     '<li class="has-sub">' + trade + ' <i class="ti ti-chevron-down caret" aria-hidden="true"></i><div class="sub"><div class="sub-inner">' + subs + '</div></div></li>' +
-    '<li>' + contact + '</li>';
+    '<li class="has-sub">' + contact + '</li>';
 }
 function renderNav() {
   document.getElementById('promoBar').innerHTML = promoHTML();
   document.getElementById('navLinks').innerHTML = navHTML('li');
   document.getElementById('mobileMenu').innerHTML = navHTML('menu');
   document.getElementById('footerLinks').innerHTML = [SECTIONS.fashion, TRADE].concat(LINE_SECTIONS.map(k => SECTIONS[k])).map(k =>
-    '<a href="' + k.path + '" onclick="return nav(event,\'' + k.path + '\')">' + esc(T(k.name)) + '</a>').join('') +
-    '<a href="' + WA + '" target="_blank" rel="noopener">WhatsApp</a>';
+    '<a href="' + k.path + '" onclick="return nav(event,\'' + k.path + '\')">' + esc(T(k.name)) + '</a>').join('');
 }
 function toggleMenu(force) {
   const m = document.getElementById('mobileMenu');
@@ -1380,7 +1393,8 @@ function renderHome() {
     '<section class="hm-why"><div class="head"><div class="mk-eyebrow center">' + esc(L('WHY JINGLE STUDIO', '为什么选择 JINGLE STUDIO')) + '</div><h2 class="mk-h2" style="font-size:48px">' + esc(L('One team, from factory to your door.', '从工厂到你手上，一个团队全程负责。')) + '</h2></div><div class="why-grid">' + why + '</div></section>' +
     // FINAL CTA
     '<section class="hm-cta"><h2 class="mk-h2">' + esc(L('Found something you like?', '看到喜欢的了吗？')) + '</h2><p class="mk-lead">' + esc(L('Send us a message — we reply with photos, details and prices.', '给我们发消息，我们会回复照片、细节和价格。')) + '</p>' +
-      '<a class="btn btn-wa" href="' + waText('Hello! I would like to know more.') + '" target="_blank" rel="noopener"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i>' + esc(L('Chat on WhatsApp · +852 6286 1590', 'WhatsApp 联系 · +852 6286 1590')) + '</a></section>';
+      '<a class="btn btn-wa" href="' + waText('Hello! I would like to know more.') + '" target="_blank" rel="noopener"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i>' + esc(L('Chat on WhatsApp · +852 6286 1590', 'WhatsApp 联系 · +852 6286 1590')) + '</a>' +
+      '<p class="mail-line">' + esc(L('Prefer email? Write to', '更习惯邮件？请发送至')) + ' <a href="' + mailto('Enquiry from jingleluxurystudio.com') + '">' + EMAIL + '</a></p></section>';
 }
 
 function paperArt(cls) {
@@ -1426,7 +1440,7 @@ function renderTrade() {
     '<section class="h-section"><div class="h-eyebrow">' + L('Why us', '为什么选择我们') + '</div><div class="h-title">' + esc(T(HOME.howTitle)) + '</div><div class="h-sub">' + esc(T(HOME.howSub)) + '</div><div class="pillars">' + pillars + '</div></section>' +
     '<section class="h-section"><div class="h-eyebrow">' + L('Process', '流程') + '</div><div class="h-title">' + esc(T(HOME.stepsTitle)) + '</div><div class="steps" style="margin-top:24px">' + steps + '</div></section>' +
     '<section class="cta-band"><div class="h-title">' + esc(T(HOME.ctaTitle)) + '</div><p class="lead">' + esc(T(HOME.ctaLead)) + '</p><div class="cta-row">' +
-      waBtn('Hello! I would like to discuss a sourcing project.', L('Message us on WhatsApp', '在 WhatsApp 上联系我们')) + '</div></section>';
+      waBtn('Hello! I would like to discuss a sourcing project.', L('Message us on WhatsApp', '在 WhatsApp 上联系我们')) + mailBtn('Trade enquiry') + '</div></section>';
 }
 
 // offer list + who we supply + quote box (stone & paper pages)
@@ -1436,7 +1450,7 @@ function lineBody(s) {
   return '<section class="line-body"><div><div class="h-eyebrow">' + L('What we offer', '我们提供') + '</div><ul class="offer-list">' + offer + '</ul></div>' +
     '<div class="side-box"><h4>' + L('Who we supply', '服务对象') + '</h4><div class="who-tags">' + who + '</div>' +
       waBtn(s.wa, L('Request a quote on WhatsApp', 'WhatsApp 询价')) +
-      '<div class="disclaimer">' + L('Tell us the product, quantity and destination — we usually reply the same day.', '告诉我们产品、数量和目的地，我们通常当天回复。') + '</div></div></section>';
+      '<div class="disclaimer">' + L('Tell us the product, quantity and destination — we usually reply the same day.', '告诉我们产品、数量和目的地，我们通常当天回复。') + '<br>' + L('Or email', '也可发邮件至') + ' <a href="' + mailto(T(s.name) + ' enquiry') + '" style="color:var(--gold-light)">' + EMAIL + '</a></div></div></section>';
 }
 const crumb = '<a class="crumb" href="/trade" onclick="return nav(event,\'/trade\')"><i class="ti ti-arrow-left" aria-hidden="true"></i> ' + '__TRADE__' + '</a>';
 const crumbHTML = () => crumb.replace('__TRADE__', esc(T(TRADE.name)));
@@ -1496,7 +1510,7 @@ function renderLineHero() {
       '<div class="tea-grid">' + cards + '</div><p class="rate-note">' + esc(note) + '</p></section>' +
     '<section class="tea-ws"><div><span class="t">' + esc(L('Stock FuLu is Coming', '批发合作')) + '</span><div class="mini-tags">' + s.who.map(w => '<span>' + esc(T(w)) + '</span>').join('') + '</div>' +
       '<span class="fine">' + esc(L('Retail prices per box; wholesale pricing on request. Each box: 30 g (10 × 3 g). Herbal infusion. Not suitable for pregnant women, children aged 14 and under, or anyone allergic to the ingredients.', '以上为单盒零售价，批发价请咨询。每盒 30 g（10 × 3 g），草本代用茶。孕妇、14 岁及以下儿童以及对配料过敏者不宜饮用。')) + '</span></div>' +
-      waBtn(s.wa, L('Wholesale enquiry on WhatsApp', 'WhatsApp 批发咨询')) + '</section>';
+      '<div class="mk-row">' + waBtn(s.wa, L('Wholesale enquiry on WhatsApp', 'WhatsApp 批发咨询')) + mailBtn('FuLu is Coming wholesale enquiry') + '</div></section>';
 }
 
 // ---------- ROUTING (clean URLs: /stone, /paper, /tea, /collection) ----------
