@@ -668,6 +668,30 @@ body.admin .tile-hint{display:block}
 .hm-paper{border-top:none}
 @media (max-width:860px){.hm-sep{padding:64px var(--pad) 48px}.hm-stone .bgimg{-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 80px);mask-image:linear-gradient(180deg,transparent 0,#000 80px)}}
 
+/* trade-first home hero */
+.hm-lines{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;max-width:1240px}
+.hm-line{display:flex;flex-direction:column;text-decoration:none;color:var(--text);background:var(--bg2);border:1px solid var(--border2);border-radius:8px;overflow:hidden;transition:border-color 0.2s,transform 0.2s}
+.hm-line:hover{border-color:var(--gold);transform:translateY(-3px)}
+.hm-line .pic{height:210px;position:relative;overflow:hidden;background:#0b0a0e}
+.hm-line .pic > img{width:100%;height:100%;object-fit:cover;display:block}
+.hm-line .deal{position:absolute;top:12px;right:12px;padding:6px 10px;border-radius:3px;background:var(--red);color:#fff6ea;font-size:11px;letter-spacing:0.08em}
+.hm-line .body{padding:20px 22px 22px;display:flex;flex-direction:column;gap:8px;flex:1}
+.hm-line h3{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;line-height:1.1}
+.hm-line p{font-size:12px;color:var(--muted);line-height:1.7;flex:1}
+.hm-line .more{font-size:12px;color:var(--gold-light)}
+.paper-mini{position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,rgba(184,154,90,0.16),rgba(7,7,12,0) 70%)}
+.paper-mini .paper-art{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(0.52);display:block}
+.hm-also{display:flex;align-items:center;gap:18px;max-width:1240px;padding:12px 20px 12px 12px;border:1px solid var(--line);border-radius:8px;background:var(--wine);text-decoration:none;color:var(--text);transition:border-color 0.2s}
+.hm-also:hover{border-color:var(--gold)}
+.hm-also .thumb{width:84px;height:64px;border-radius:4px;overflow:hidden;flex-shrink:0;background:#1a0c11}
+.hm-also .thumb svg{width:100%;height:100%;display:block}
+.hm-also .t{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0}
+.hm-also small{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold)}
+.hm-also b{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400}
+.hm-also .go{font-size:12px;color:var(--gold-light);white-space:nowrap}
+@media (max-width:1100px){.hm-line .pic{height:170px}}
+@media (max-width:860px){.hm-lines{grid-template-columns:1fr}.hm-line .pic{height:190px}.hm-also b{font-size:17px}.hm-also .go{display:none}}
+
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
@@ -1205,17 +1229,18 @@ function navHTML(kind) {
   const subs = LINE_SECTIONS.map(k => navLink(SECTIONS[k].path, SECTIONS[k].icon, SECTIONS[k].name, currentView === 'section' && currentSection === k, true, isLi ? '' : 'sub-item')).join('');
   const waItem = '<a href="' + WA + '" target="_blank" rel="noopener" class="' + (isLi ? '' : 'sub-item') + '"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i>WhatsApp · +852 6286 1590</a>';
   const mailItem = '<a href="' + mailto('Enquiry from jingleluxurystudio.com') + '" class="' + (isLi ? '' : 'sub-item') + '"><i class="ti ti-mail" aria-hidden="true"></i>' + EMAIL + '</a>';
-  if (!isLi) return home + coll + trade + subs + '<a href="' + WA + '" target="_blank" rel="noopener"><i class="ti ti-message-circle" aria-hidden="true"></i>' + esc(L('Contact', '联系我们')) + '</a>' + waItem + mailItem;
+  if (!isLi) return home + trade + subs + coll + '<a href="' + WA + '" target="_blank" rel="noopener"><i class="ti ti-message-circle" aria-hidden="true"></i>' + esc(L('Contact', '联系我们')) + '</a>' + waItem + mailItem;
   const contact = '<a href="' + WA + '" target="_blank" rel="noopener">' + esc(L('Contact', '联系我们')) + '</a> <i class="ti ti-chevron-down caret" aria-hidden="true"></i><div class="sub sub-right"><div class="sub-inner">' + waItem + mailItem + '</div></div>';
-  return '<li>' + home + '</li><li>' + coll + '</li>' +
+  return '<li>' + home + '</li>' +
     '<li class="has-sub">' + trade + ' <i class="ti ti-chevron-down caret" aria-hidden="true"></i><div class="sub"><div class="sub-inner">' + subs + '</div></div></li>' +
+    '<li>' + coll + '</li>' +
     '<li class="has-sub">' + contact + '</li>';
 }
 function renderNav() {
   document.getElementById('promoBar').innerHTML = promoHTML();
   document.getElementById('navLinks').innerHTML = navHTML('li');
   document.getElementById('mobileMenu').innerHTML = navHTML('menu');
-  document.getElementById('footerLinks').innerHTML = [SECTIONS.fashion, TRADE].concat(LINE_SECTIONS.map(k => SECTIONS[k])).map(k =>
+  document.getElementById('footerLinks').innerHTML = [TRADE].concat(LINE_SECTIONS.map(k => SECTIONS[k]), [SECTIONS.fashion]).map(k =>
     '<a href="' + k.path + '" onclick="return nav(event,\'' + k.path + '\')">' + esc(T(k.name)) + '</a>').join('');
 }
 function toggleMenu(force) {
@@ -1333,7 +1358,7 @@ function goCollection(cat) {
 function renderHome() {
   const F = SECTIONS.fashion;
   const trTags = LINE_SECTIONS.map(k => '<span>' + esc(T(SECTIONS[k].name)) + '</span>').join('');
-  const marqueeWords = [['Bags', '手袋'], ['Sneakers', '运动鞋'], ['Heels', '高跟鞋'], ['Apparel', '服装'], ['Natural Stone', '天然石材'], ['Herbal Tea', '草本茶'], ['Custom Paper', '定制纸品']];
+  const marqueeWords = [['Natural Stone', '天然石材'], ['Marble Slabs', '大理石大板'], ['Herbal Tea', '草本茶'], ['Custom Napkins', '定制餐巾纸'], ['Coasters', '杯垫'], ['Greaseproof Paper', '防油纸'], ['Made to Order', '按需定制'], ['Shipped Worldwide', '全球发货']];
   const mq = marqueeWords.map(w => '<span>' + esc(T(w)) + '</span><span class="d">◆</span>').join('');
   const why = [
     [['Direct from manufacturers', '工厂直供'], ['Factory pricing from suppliers we know and work with.', '与熟悉的供应商直接合作，拿到工厂价。']],
@@ -1344,28 +1369,33 @@ function renderHome() {
   const stoneThumbs = [['stone-island', '50% 70%', ['Waterfall island', '瀑布式中岛']], ['stone-backsplash', '60% 55%', ['Backsplash & wall', '背景墙与挡水板']], ['stone-slab', '50% 50%', ['Natural slab', '天然大板']]]
     .map(([n, pos, cap]) => '<figure><img src="' + IMG(n) + '" alt="' + esc(T(cap)) + '" loading="lazy" style="object-position:' + pos + '"/><figcaption>' + esc(T(cap)) + '</figcaption></figure>').join('');
 
+  const lineCard = (k, pic, extra) => { const s = SECTIONS[k];
+    return '<a class="hm-line" href="' + s.path + '" onclick="return nav(event,\'' + s.path + '\')"><div class="pic">' + pic + (extra || '') + '</div>' +
+      '<div class="body"><h3>' + esc(T(s.name)) + '</h3><p>' + esc(T(s.card)) + '</p><span class="more">' + esc(L('Explore', '了解详情')) + ' →</span></div></a>'; };
   document.getElementById('homeView').innerHTML =
-    // HERO + two doors
+    // HERO: trade first
     '<section class="hm-hero"><div class="wash" aria-hidden="true"><img src="' + IMG('stone-slab') + '" alt=""/></div><div class="hm-hero-in">' +
-      '<div class="hm-intro"><div class="mk-eyebrow">' + esc(T(DOORS.eyebrow)) + '</div><h1 class="mk-h1">' + T(DOORS.title) + '</h1><p class="mk-lead">' + esc(T(DOORS.lead)) + '</p></div>' +
-      '<div class="hm-doors">' +
-        '<a class="hm-door" href="' + F.path + '" onclick="return nav(event,\'' + F.path + '\')"><div class="pic">' + decoSVG('110 300 660 400') + '</div>' +
-          '<div class="body"><h2>' + esc(T(DOORS.collection.title)) + '</h2><p>' + esc(T(DOORS.collection.text)) + '</p><span class="btn btn-primary btn-lg">' + esc(T(DOORS.collection.btn)) + ' →</span></div></a>' +
-        '<a class="hm-door" href="' + TRADE.path + '" onclick="return nav(event,\'' + TRADE.path + '\')"><div class="pic"><img src="' + IMG('stone-island') + '" alt="' + esc(L('Marble waterfall kitchen island', '大理石瀑布式厨房中岛')) + '" style="object-position:50% 60%"/><div class="shade"></div><div class="tags">' + trTags + '</div></div>' +
-          '<div class="body"><h2>' + esc(T(DOORS.trade.title)) + '</h2><p>' + esc(T(DOORS.trade.text)) + '</p><span class="btn btn-primary btn-lg">' + esc(T(DOORS.trade.btn)) + ' →</span></div></a>' +
+      '<div class="hm-intro"><div class="mk-eyebrow">' + esc(T(HOME.eyebrow)) + '</div><h1 class="mk-h1">' + T(HOME.title) + '</h1><p class="mk-lead">' + esc(T(HOME.lead)) + '</p>' +
+        '<div class="mk-row" style="margin-top:6px">' + waBtn('Hello! I have a trade / wholesale enquiry.', L('Request a quote on WhatsApp', 'WhatsApp 询价')) + mailBtn('Trade enquiry') + '</div></div>' +
+      '<div class="hm-lines">' +
+        lineCard('stone', '<img src="' + IMG('stone-island') + '" alt="' + esc(L('Marble waterfall kitchen island', '大理石瀑布式厨房中岛')) + '" style="object-position:50% 62%"/>') +
+        lineCard('tea', '<img src="' + IMG('tea-range') + '" alt="' + esc(L('FuLu is Coming herbal tea range', '养个福禄草本茶系列')) + '" style="object-fit:contain;background:#0a090d"/>', '<span class="deal">' + esc(L('Up to ' + TEA_MAX_OFF + '% off', '最高立减 ' + TEA_MAX_OFF + '%')) + '</span>') +
+        lineCard('paper', '<div class="paper-mini">' + paperArt('m') + '</div>') +
       '</div>' +
+      '<a class="hm-also" href="' + F.path + '" onclick="return nav(event,\'' + F.path + '\')"><span class="thumb">' + decoSVG('300 330 300 280') + '</span>' +
+        '<span class="t"><small>' + esc(L('Also from Jingle Studio', '另有')) + '</small><b>' + esc(L('The Collection — curated bags, sneakers, heels and apparel', '精选服饰：手袋、运动鞋、高跟鞋与服装')) + '</b></span><span class="go">' + esc(L('Browse →', '去看看 →')) + '</span></a>' +
       '<a class="scroll-cue" href="#hmMore" onclick="document.getElementById(\'hmMore\').scrollIntoView({behavior:\'smooth\'});return false">' + esc(L('SCROLL TO EXPLORE', '向下浏览')) + '</a>' +
     '</div></section>' +
     // MARQUEE
     '<div class="marquee" id="hmMore" aria-hidden="true"><div class="marquee-track">' + mq + mq + mq + mq + '</div></div>' +
-    // COLLECTION
-    '<section class="hm-coll"><div class="sec-head"><div><div class="mk-eyebrow">' + esc(L('The Collection', '精选服饰')) + '</div>' +
-      '<h2 class="mk-h2">' + L('Dressed for the<br><em>evening and every day.</em>', '从晚宴到日常，<br><em>件件精挑细选。</em>') + '</h2>' +
-      '<p class="mk-lead">' + esc(L('Bags, sneakers, heels and apparel, hand-picked and photographed piece by piece. Send a message to ask about any item.', '手袋、运动鞋、高跟鞋与服装，每一件都是挑选后单独拍摄。对任何一件感兴趣，发消息问我们即可。')) + '</p></div>' +
-      navA(F.path, L('View all pieces →', '查看全部 →'), 'btn-ghost') + '</div>' +
-      '<p class="tile-hint"><i class="ti ti-info-circle" aria-hidden="true"></i> 管理员：每张图片都可以点「上传图片」换成你自己的图（建议竖图 4:5，至少 800×1000px）。没传图时会自动用该分类最新的商品图。</p>' +
-      '<div class="tiles">' + TILES.map(tileHTML).join('') + '</div></section>' +
-    // TEA OFFER
+    // NATURAL STONE
+    '<section class="hm-stone"><img class="bgimg" src="' + IMG('stone-kitchen') + '" alt="' + esc(L('Marble backsplash and waterfall island in a warm wood kitchen', '暖色木质厨房中的大理石背景墙与中岛')) + '" loading="lazy"/><div class="fade"></div>' +
+      '<div class="txt"><div class="mk-eyebrow">' + esc(L('Natural Stone', '天然石材')) + '</div>' +
+        '<h2 class="mk-h2">' + L('Marble that turns a room<br><em>into a statement.</em>', '一块好石材，<br><em>让整个空间不一样。</em>') + '</h2>' +
+        '<p class="mk-lead">' + esc(L('Slabs and tiles for fabricators, interior designers and hotel fit-outs — sourced in China, shipped to the UK, Europe and beyond.', '为石材加工厂、室内设计师和酒店装修提供大板与瓷砖：中国采购，发往英国、欧洲及全球。')) + '</p>' +
+        '<div class="thumbs3">' + stoneThumbs + '</div>' +
+        '<div class="mk-row" style="margin-top:6px">' + navA('/stone', L('Explore natural stone →', '了解天然石材 →')) + waBtn('Hello! I would like to request natural stone samples.', L('Request samples', '索取样品'), 'btn-ghost') + '</div></div></section>' +
+    // HERBAL TEA
     '<div class="hm-sep" aria-hidden="true">◆</div>' +
     '<section class="hm-tea"><img class="bgimg" src="' + IMG('tea-range') + '" alt="' + esc(L('The six FuLu is Coming herbal teas with a purple gift bag', '养个福禄六款草本茶与紫色礼袋')) + '" loading="lazy"/><div class="fade"></div>' +
       '<div class="stamp"><small>' + L('UP TO', '最高') + '</small><b>' + TEA_MAX_OFF + '%</b><span>' + L('OFF', '优惠') + '</span></div>' +
@@ -1375,14 +1405,6 @@ function renderHome() {
         teaChips() +
         '<div class="price-line"><span class="lbl">' + L('Now from', '现价') + '</span><span class="now">¥' + TEA_FROM + '</span><span class="was">¥' + TEA_FROM_WAS + '</span></div>' +
         '<div class="mk-row">' + navA('/tea', L('SHOP THE OFFER →', '查看优惠 →'), 'btn-red') + '</div></div></section>' +
-    // NATURAL STONE
-    '<div class="hm-sep" aria-hidden="true">◆</div>' +
-    '<section class="hm-stone"><img class="bgimg" src="' + IMG('stone-kitchen') + '" alt="' + esc(L('Marble backsplash and waterfall island in a warm wood kitchen', '暖色木质厨房中的大理石背景墙与中岛')) + '" loading="lazy"/><div class="fade"></div>' +
-      '<div class="txt"><div class="mk-eyebrow">' + esc(L('Natural Stone', '天然石材')) + '</div>' +
-        '<h2 class="mk-h2">' + L('Marble that turns a room<br><em>into a statement.</em>', '一块好石材，<br><em>让整个空间不一样。</em>') + '</h2>' +
-        '<p class="mk-lead">' + esc(L('Slabs and tiles for fabricators, interior designers and hotel fit-outs — sourced in China, shipped to the UK, Europe and beyond.', '为石材加工厂、室内设计师和酒店装修提供大板与瓷砖：中国采购，发往英国、欧洲及全球。')) + '</p>' +
-        '<div class="thumbs3">' + stoneThumbs + '</div>' +
-        '<div class="mk-row" style="margin-top:6px">' + navA('/stone', L('Explore natural stone →', '了解天然石材 →')) + waBtn('Hello! I would like to request natural stone samples.', L('Request samples', '索取样品'), 'btn-ghost') + '</div></div></section>' +
     // PAPER
     '<div class="hm-sep" aria-hidden="true">◆</div>' +
     '<section class="hm-paper"><div class="txt"><div class="mk-eyebrow">' + esc(L('Custom Paper Products', '定制纸制品')) + '</div>' +
@@ -1391,10 +1413,18 @@ function renderHome() {
         '<div class="mk-row">' + navA('/paper', L('Get a custom quote →', '定制询价 →')) + '</div></div>' + paperArt('') + '</section>' +
     // WHY US
     '<section class="hm-why"><div class="head"><div class="mk-eyebrow center">' + esc(L('WHY JINGLE STUDIO', '为什么选择 JINGLE STUDIO')) + '</div><h2 class="mk-h2" style="font-size:48px">' + esc(L('One team, from factory to your door.', '从工厂到你手上，一个团队全程负责。')) + '</h2></div><div class="why-grid">' + why + '</div></section>' +
-    // FINAL CTA
-    '<section class="hm-cta"><h2 class="mk-h2">' + esc(L('Found something you like?', '看到喜欢的了吗？')) + '</h2><p class="mk-lead">' + esc(L('Send us a message — we reply with photos, details and prices.', '给我们发消息，我们会回复照片、细节和价格。')) + '</p>' +
-      '<a class="btn btn-wa" href="' + waText('Hello! I would like to know more.') + '" target="_blank" rel="noopener"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i>' + esc(L('Chat on WhatsApp · +852 6286 1590', 'WhatsApp 联系 · +852 6286 1590')) + '</a>' +
-      '<p class="mail-line">' + esc(L('Prefer email? Write to', '更习惯邮件？请发送至')) + ' <a href="' + mailto('Enquiry from jingleluxurystudio.com') + '">' + EMAIL + '</a></p></section>';
+    // COLLECTION (second priority)
+    '<div class="hm-sep" aria-hidden="true">◆</div>' +
+    '<section class="hm-coll"><div class="sec-head"><div><div class="mk-eyebrow">' + esc(L('Also from Jingle Studio · The Collection', '另有 · 精选服饰')) + '</div>' +
+      '<h2 class="mk-h2">' + L('Dressed for the<br><em>evening and every day.</em>', '从晚宴到日常，<br><em>件件精挑细选。</em>') + '</h2>' +
+      '<p class="mk-lead">' + esc(L('Bags, sneakers, heels and apparel, hand-picked and photographed piece by piece. Send a message to ask about any item.', '手袋、运动鞋、高跟鞋与服装，每一件都是挑选后单独拍摄。对任何一件感兴趣，发消息问我们即可。')) + '</p></div>' +
+      navA(F.path, L('View all pieces →', '查看全部 →'), 'btn-ghost') + '</div>' +
+      '<p class="tile-hint"><i class="ti ti-info-circle" aria-hidden="true"></i> 管理员：每张图片都可以点「上传图片」换成你自己的图（建议竖图 4:5，至少 800×1000px）。没传图时会自动用该分类最新的商品图。</p>' +
+      '<div class="tiles">' + TILES.map(tileHTML).join('') + '</div></section>' +
+    // FINAL CTA (trade enquiry)
+    '<section class="hm-cta"><h2 class="mk-h2">' + esc(L('Have a project in mind?', '有采购或定制需求？')) + '</h2><p class="mk-lead">' + esc(L('Tell us the product, quantity and destination — we reply with options, photos and a clear price.', '告诉我们产品、数量和目的地，我们会回复方案、照片和清晰的报价。')) + '</p>' +
+      '<a class="btn btn-wa" href="' + waText('Hello! I have a trade / wholesale enquiry.') + '" target="_blank" rel="noopener"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i>' + esc(L('Chat on WhatsApp · +852 6286 1590', 'WhatsApp 联系 · +852 6286 1590')) + '</a>' +
+      '<p class="mail-line">' + esc(L('Prefer email? Write to', '更习惯邮件？请发送至')) + ' <a href="' + mailto('Trade enquiry') + '">' + EMAIL + '</a></p></section>';
 }
 
 function paperArt(cls) {
