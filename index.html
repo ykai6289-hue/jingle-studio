@@ -778,6 +778,16 @@ body.admin .tile-hint{display:block}
 @media (max-width:1100px){.sc-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:860px){.sc-sec{padding:48px var(--pad) 40px}.sc-sec .mk-h2{font-size:34px}.sc-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.sc-card .cap{font-size:15px;padding:22px 10px 8px}}
 
+.pg-hero .photo .photo-cap{position:absolute;right:16px;bottom:14px;z-index:2;padding:5px 10px;border-radius:12px;background:rgba(7,7,12,0.7);border:1px solid var(--line);color:var(--gold-light);font-size:11px;letter-spacing:0.08em}
+.ws{display:flex;flex-direction:column;gap:12px;margin-top:8px;padding-top:24px;border-top:1px solid var(--border)}
+.ws-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.ws-note{font-size:11px;color:var(--dim)}
+.ws-strip{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.ws-strip figure{display:flex;flex-direction:column;gap:6px;min-width:0}
+.ws-strip img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:3px;border:1px solid var(--border);display:block;filter:saturate(0.85)}
+.ws-strip figcaption{font-size:10px;color:var(--muted);line-height:1.5}
+@media (max-width:860px){.ws-strip{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
@@ -1593,6 +1603,7 @@ function stoneFiltered() {
 // ----- Stone in real spaces (scene photos) -----
 // [photo, stone (Chinese name as in the library, or '' when not listed), space, English label, Chinese label]
 const SCENES = [
+  ['p-persian', '', 'living', 'Persian White Jade living room', '波斯白玉客厅'],
   ['p15_807', '鱼肚白', 'kitchen', 'Carrara Statuario island', '鱼肚白岛台'],
   ['p21_1115', '宝格丽红', 'kitchen', 'Bvlgari Red splashback', '宝格丽红挡水墙'],
   ['p25_1327', '山水绿', 'kitchen', 'Kinawa Light breakfast bar', '山水绿吧台'],
@@ -1725,7 +1736,10 @@ function stoneWorksHTML() {
       waBtn('Hello! I have a custom stone project. Can I send you drawings?', L('Send us your drawings', '发图纸给我们')) + '</div>' +
     '<div class="sw-stats">' + stats + '</div>' +
     '<div class="sw-grid">' + cards + '</div>' +
-    '<div class="sw-how"><div class="h-eyebrow">' + esc(L('How a stone project works', '石材项目流程')) + '</div><div class="steps">' + steps + '</div></div></section>';
+    '<div class="sw-how"><div class="h-eyebrow">' + esc(L('How a stone project works', '石材项目流程')) + '</div><div class="steps">' + steps + '</div></div>' +
+    '<div class="ws"><div class="ws-head"><span class="h-eyebrow" style="margin:0">' + esc(L('From the workshop', '生产实拍')) + '</span><span class="ws-note">' + esc(L('Recent orders in production', '近期订单生产中')) + '</span></div><div class="ws-strip">' +
+      [['f1', ['Cutting the block', '荒料切割']], ['f2', ['Sawing to size', '按尺寸锯切']], ['f3', ['Vanity tops, dry-laid for checking', '台面排板检查']], ['f4', ['Floor tiles matched before packing', '地砖对纹排板']], ['f5', ['Travertine cabinet in progress', '洞石柜体加工中']], ['f6', ['Hand-finishing a travertine vanity', '洞石台盆手工打磨']]]
+        .map(([f, c]) => '<figure><img src="/img/scenes/' + f + '.jpg" alt="' + esc(T(c)) + '" loading="lazy"/><figcaption>' + esc(T(c)) + '</figcaption></figure>').join('') + '</div></div></section>';
 }
 
 function renderLineHero() {
@@ -1736,7 +1750,7 @@ function renderLineHero() {
   if (currentSection === 'stone') {
     const thumbs = [['stone-island', '50% 72%', ['Waterfall island', '瀑布式中岛']], ['stone-backsplash', '60% 55%', ['Backsplash & wall', '背景墙与挡水板']], ['stone-slab', '50% 50%', ['Natural slab', '天然大板']]]
       .map(([n, pos, cap]) => '<figure><img src="' + IMG(n) + '" alt="' + esc(T(cap)) + '" style="object-position:' + pos + '"/><figcaption>' + esc(T(cap)) + '</figcaption></figure>').join('');
-    el.innerHTML = '<div class="pg-hero"><div class="photo"><img src="' + IMG('stone-kitchen') + '" alt="' + esc(L('Marble backsplash and waterfall island in a warm wood kitchen', '暖色木质厨房中的大理石背景墙与中岛')) + '"/></div>' +
+    el.innerHTML = '<div class="pg-hero"><div class="photo"><img src="' + IMG('stone-persian') + '" alt="' + esc(L('Living room finished in Persian White Jade', '波斯白玉装饰的客厅')) + '" style="object-position:50% 55%"/><span class="photo-cap">' + esc(L('Persian White Jade', '波斯白玉')) + '</span></div>' +
       '<div class="txt">' + crumbHTML() + '<div class="mk-eyebrow">' + esc(T(s.eyebrow)) + '</div><h1 class="mk-h1">' + T(s.title) + '</h1><p class="mk-lead">' + esc(T(s.intro)) + '</p>' +
         '<div class="mk-row">' + waBtn(s.wa, L('Request a quote on WhatsApp', 'WhatsApp 询价')) + scrollA('stoneLib', L('Browse the stone library ↓', '浏览石材库 ↓')) + '</div>' +
         '<div class="h-eyebrow" style="margin:10px 0 -6px;color:var(--muted)">' + esc(L('Stone in real interiors', '实景效果')) + '</div><div class="thumbs3" style="max-width:560px">' + thumbs + '</div></div></div>' + stoneWorksHTML() + scenesHTML() + stoneLibraryHTML() + lineBody(s);
