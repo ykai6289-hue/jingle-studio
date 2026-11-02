@@ -759,6 +759,25 @@ body.admin .tile-hint{display:block}
 @media (max-width:1100px){.sw-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sw-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.sw-stats div:nth-child(3){border-left:none;padding-left:0}}
 @media (max-width:860px){.sw-sec{padding:48px var(--pad) 40px}.sw-sec .mk-h2{font-size:34px}.sw-stats b{font-size:32px}.sw-card b{font-size:18px}.sw-grid{gap:12px}}
 
+/* stone in real spaces */
+.sc-sec{padding:72px var(--pad) 64px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:24px}
+.sc-sec .mk-h2{font-size:48px}
+.sc-sec .chips{flex-wrap:wrap;overflow:visible}
+.sc-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.sc-card{position:relative;padding:0;border:1px solid var(--border);border-radius:4px;overflow:hidden;background:#111;cursor:pointer;aspect-ratio:4/3;max-width:100%}
+.sc-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s}
+.sc-card:hover img{transform:scale(1.05)}
+.sc-card:hover{border-color:var(--gold)}
+.sc-card .cap{position:absolute;left:0;right:0;bottom:0;padding:28px 14px 12px;background:linear-gradient(180deg,rgba(7,7,12,0),rgba(7,7,12,0.85));color:var(--text);font-family:'Cormorant Garamond',serif;font-size:18px;text-align:left;line-height:1.2}
+.st-card{position:relative}
+.has-sc{position:absolute;top:10px;left:10px;z-index:2;display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:12px;background:rgba(7,7,12,0.78);border:1px solid var(--line);color:var(--gold-light);font-size:10px;letter-spacing:0.06em}
+.st-thumbs{display:flex;gap:8px;flex-wrap:wrap}
+.st-thumbs button{width:72px;height:54px;padding:0;border:1px solid var(--border2);border-radius:3px;overflow:hidden;cursor:pointer;background:none}
+.st-thumbs button.on{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+.st-thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+@media (max-width:1100px){.sc-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:860px){.sc-sec{padding:48px var(--pad) 40px}.sc-sec .mk-h2{font-size:34px}.sc-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.sc-card .cap{font-size:15px;padding:22px 10px 8px}}
+
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
@@ -1570,6 +1589,68 @@ function stoneFiltered() {
   const q = norm(stQuery).trim();
   return stoneList().filter(s => (stType === 'all' || s.type === stType) && (!stColor || s.color === stColor) && (!q || norm(s.en + ' ' + s.zh).includes(q)));
 }
+
+// ----- Stone in real spaces (scene photos) -----
+// [photo, stone (Chinese name as in the library, or '' when not listed), space, English label, Chinese label]
+const SCENES = [
+  ['p15_807', '鱼肚白', 'kitchen', 'Carrara Statuario island', '鱼肚白岛台'],
+  ['p21_1115', '宝格丽红', 'kitchen', 'Bvlgari Red splashback', '宝格丽红挡水墙'],
+  ['p25_1327', '山水绿', 'kitchen', 'Kinawa Light breakfast bar', '山水绿吧台'],
+  ['p31_1641', '大象白', 'kitchen', 'Galactic worktop', '大象白台面'],
+  ['p41_2114', '', 'kitchen', 'White marble waterfall island', '白色大理石瀑布岛台'],
+  ['p17_913', '潘多拉', 'bath', 'Patagonia Quartzite vanity', '潘多拉洗手台'],
+  ['p25_1337', '云中翡翠', 'bath', 'Ongouma vanity top', '云中翡翠台面'],
+  ['p59_2937', '', 'bath', 'Wood-grain marble bathroom', '木纹大理石浴室'],
+  ['p15_797', '宝格丽紫', 'living', 'Calacatta Viola archway', '宝格丽紫拱门'],
+  ['p17_903', '芬迪白/毕加索', 'living', 'Picasso feature wall', '毕加索背景墙'],
+  ['p19_1019', '镜湖春晓', 'living', 'Taj Mahal living room', '镜湖春晓客厅'],
+  ['p21_1125', '四季绿', 'living', 'Four Season Green TV wall', '四季绿电视墙'],
+  ['p23_1221', '维多利亚绿', 'living', 'Victoria Green feature wall', '维多利亚绿背景墙'],
+  ['p27_1433', '', 'living', 'Cold Emerald feature wall', '冷翡翠背景墙'],
+  ['p29_1541', '巴西鱼肚灰', 'living', 'Brazil Cenere di Pesce wall', '巴西鱼肚灰墙面'],
+  ['p29_1551', '意大利蓝金沙', 'living', 'Palissandro Blue TV wall', '意大利蓝金沙电视墙'],
+  ['p33_1741', '蓝玛瑙石', 'living', 'Backlit Blue Onyx Agate wall', '蓝玛瑙透光墙'],
+  ['p37_1945', '粉玉', 'living', 'Pink Onyx fireplace', '粉玉壁炉'],
+  ['p23_1231', '百达翡翠', 'floor', 'Patek Philippe floor', '百达翡翠地面'],
+  ['p27_1443', '宝格丽黑水晶', 'floor', 'BVLGARI Black Crystal floor', '宝格丽黑水晶地面'],
+  ['p37_1935', '蓝玉', 'floor', 'Blue Onyx spiral staircase', '蓝玉旋转楼梯'],
+  ['p49_2492', '', 'floor', 'Black marble floor', '黑色大理石地面'],
+  ['p55_2754', '', 'floor', 'Green marble staircase', '绿色大理石楼梯'],
+  ['p19_1009', '蓝翡翠', 'dining', 'Halcyon Blue dining table', '蓝翡翠餐桌'],
+  ['p33_1751', '绿玛瑙石', 'dining', 'Green Onyx Agate table', '绿玛瑙餐桌'],
+  ['p35_1857', '古青玉', 'dining', 'Old Green Onyx coffee table', '古青玉茶几'],
+  ['p31_1651', '芬迪红/威尼斯红', 'dining', 'Monica Red bar shelving', '芬迪红酒柜'],
+  ['p35_1847', '青玉', 'dining', 'Green Onyx bar counter', '青玉吧台'],
+];
+const SPACES = [['all', ['All spaces', '全部空间']], ['kitchen', ['Kitchens', '厨房']], ['bath', ['Bathrooms', '浴室']], ['living', ['Living & feature walls', '客厅与背景墙']], ['floor', ['Floors & stairs', '地面与楼梯']], ['dining', ['Dining & bars', '餐桌与吧台']]];
+let scSpace = 'all';
+const stoneIdByZh = zh => { const r = (window.STONES || []).find(x => x[1] === zh); return r ? r[0] : ''; };
+function scenesHTML() {
+  return '<section class="sc-sec" id="stoneScenes"><div class="sec-head"><div><div class="mk-eyebrow">' + esc(L('Stone in real spaces', '实景案例')) + '</div>' +
+      '<h2 class="mk-h2">' + L('See it in the room<br><em>before you choose.</em>', '先看实景，<br><em>再选石材。</em>') + '</h2>' +
+      '<p class="mk-lead">' + esc(L('Kitchens, bathrooms, feature walls, floors and bars finished in the stones from our library. Tap a photo to see the stone and ask about it.', '厨房、浴室、背景墙、地面与吧台的实景效果，用的都是石材库里的石材。点开照片即可查看石材并询价。')) + '</p></div></div>' +
+    '<div class="chips" id="scChips"></div><div class="sc-grid" id="scGrid"></div></section>';
+}
+function renderScenes() {
+  const grid = document.getElementById('scGrid'); if (!grid) return;
+  document.getElementById('scChips').innerHTML = SPACES.map(([k, nm]) => '<button class="chip' + (scSpace === k ? ' active' : '') + '" onclick="scSpace=\'' + k + '\';renderScenes()">' + esc(T(nm)) + '<span class="n">' + SCENES.filter(x => k === 'all' || x[2] === k).length + '</span></button>').join('');
+  grid.innerHTML = SCENES.filter(x => scSpace === 'all' || x[2] === scSpace).map(([f, zh, sp, en, zhl], i) =>
+    '<button class="sc-card" onclick="openScene(\'' + f + '\')"><img src="/img/scenes/' + f + '.jpg" alt="' + esc(en) + '" loading="lazy"/><span class="cap">' + esc(currentLang === 'zh' ? zhl : en) + '</span></button>').join('');
+}
+function openScene(f) {
+  const sc = SCENES.find(x => x[0] === f); if (!sc) return;
+  const id = stoneIdByZh(sc[1]);
+  if (id) { openStone(id, '/img/scenes/' + f + '.jpg'); return; }
+  const msg = 'Hello! I saw "' + sc[3] + '" on your website. Which stone is it, and could you send slab photos and price?';
+  const el = document.getElementById('stoneBox');
+  el.innerHTML = '<div class="st-box" role="dialog" aria-modal="true" aria-label="' + esc(sc[3]) + '"><button class="st-x" onclick="closeStone()" aria-label="Close"><i class="ti ti-x" aria-hidden="true"></i></button>' +
+    '<div class="st-big"><img src="/img/scenes/' + f + '.jpg" alt="' + esc(sc[3]) + '"/></div>' +
+    '<div class="st-info"><div class="mk-eyebrow">' + esc(L('Stone in real spaces', '实景案例')) + '</div><h3>' + esc(currentLang === 'zh' ? sc[4] : sc[3]) + '</h3>' +
+      '<p class="mk-lead" style="font-size:13px">' + esc(L('Ask us about this look — we will tell you the stone and send photos of available slabs.', '想要这个效果？问我们就行，我们会告诉你用的是哪款石材，并发可选大板的照片。')) + '</p>' +
+      '<div class="mk-row">' + waBtn(msg, L('Ask about this look', '询问这个效果')) + '</div></div></div>';
+  el.classList.add('open'); document.body.style.overflow = 'hidden';
+}
+
 function stoneLibraryHTML() {
   const n = Math.floor(((window.STONES || []).length || 140) / 10) * 10;
   return '<section class="st-lib" id="stoneLib"><div class="sec-head"><div><div class="mk-eyebrow">' + esc(L('Stone Library', '石材库')) + '</div>' +
@@ -1595,17 +1676,21 @@ function renderStoneGrid(full) {
   document.getElementById('stCount').textContent = list.length + ' ' + L(list.length === 1 ? 'stone' : 'stones', '款');
   grid.innerHTML = list.length ? list.map(s =>
     '<button class="st-card" onclick="openStone(\'' + s.id + '\')"><span class="ph"><img src="/img/stones/' + s.id + '.jpg" alt="' + esc(s.en + ' ' + s.zh) + '" loading="lazy"/></span>' +
-      '<span class="nm"><b>' + esc(currentLang === 'zh' ? s.zh : s.en) + '</b><small>' + esc(currentLang === 'zh' ? s.en : s.zh) + '</small></span><span class="ty">' + esc(typeName(s.type)) + '</span></button>').join('')
+      (SCENES.some(x => x[1] === s.zh) ? '<span class="has-sc"><i class="ti ti-photo" aria-hidden="true"></i>' + esc(L('Project photo', '有实景')) + '</span>' : '') + '<span class="nm"><b>' + esc(currentLang === 'zh' ? s.zh : s.en) + '</b><small>' + esc(currentLang === 'zh' ? s.en : s.zh) + '</small></span><span class="ty">' + esc(typeName(s.type)) + '</span></button>').join('')
     : '<div class="st-empty">' + esc(L('No stones match. Try another colour or clear the search.', '没有符合条件的石材，换个颜色或清除搜索试试。')) + '</div>';
 }
-function openStone(id) {
+function openStone(id, startImg) {
   const s = stoneList().find(x => x.id === id); if (!s) return;
+  const sw = '/img/stones/' + s.id + '.jpg';
+  const pics = [sw].concat(SCENES.filter(x => x[1] === s.zh).map(x => '/img/scenes/' + x[0] + '.jpg'));
+  const first = startImg || sw;
+  const thumbs = pics.length > 1 ? '<div class="st-thumbs">' + pics.map((p, i) => '<button class="' + (p === first ? 'on' : '') + '" onclick="document.getElementById(\'stBigImg\').src=\'' + p + '\';this.parentNode.querySelectorAll(\'button\').forEach(b=>b.classList.remove(\'on\'));this.classList.add(\'on\')" aria-label="' + (i ? esc(L('In a real space', '实景')) : esc(L('Stone surface', '石材纹理'))) + '"><img src="' + p + '" alt=""/></button>').join('') + '</div>' : '';
   const typeName = T((ST_TYPES.find(t => t[0] === s.type) || ST_TYPES[0])[1]);
   const msg = 'Hello! I am interested in ' + s.en + ' (' + s.zh + '). Could you send slab photos, sizes and price?';
   const el = document.getElementById('stoneBox');
   el.innerHTML = '<div class="st-box" role="dialog" aria-modal="true" aria-label="' + esc(s.en) + '"><button class="st-x" onclick="closeStone()" aria-label="Close"><i class="ti ti-x" aria-hidden="true"></i></button>' +
-    '<div class="st-big"><img src="/img/stones/' + s.id + '.jpg" alt="' + esc(s.en + ' ' + s.zh) + '"/></div>' +
-    '<div class="st-info"><div class="mk-eyebrow">' + esc(typeName) + '</div><h3>' + esc(s.en) + '</h3><div class="zh zh-serif">' + esc(s.zh) + '</div>' +
+    '<div class="st-big"><img id="stBigImg" src="' + first + '" alt="' + esc(s.en + ' ' + s.zh) + '"/></div>' +
+    '<div class="st-info"><div class="mk-eyebrow">' + esc(typeName) + '</div><h3>' + esc(s.en) + '</h3><div class="zh zh-serif">' + esc(s.zh) + '</div>' + thumbs +
       '<ul class="offer-list"><li><i class="ti ti-check" aria-hidden="true"></i><span>' + esc(L('Slabs and cut-to-size tiles', '大板与按尺寸切割的板材')) + '</span></li><li><i class="ti ti-check" aria-hidden="true"></i><span>' + esc(L('Photos of the actual slabs before you order', '下单前提供实际大板照片')) + '</span></li><li><i class="ti ti-check" aria-hidden="true"></i><span>' + esc(L('Shipped to the UK, Europe and worldwide', '发往英国、欧洲及全球')) + '</span></li></ul>' +
       '<div class="mk-row">' + waBtn(msg, L('Ask about this stone', '询问这款石材')) + '<a class="btn btn-ghost btn-lg" href="' + mailto(s.en + ' (' + s.zh + ') enquiry') + '"><i class="ti ti-mail" aria-hidden="true"></i>' + esc(L('Email', '邮件')) + '</a></div></div></div>';
   el.classList.add('open'); document.body.style.overflow = 'hidden';
@@ -1615,14 +1700,14 @@ function closeStone() { const el = document.getElementById('stoneBox'); el.class
 
 // ----- Stone: made-to-measure project types + how it works -----
 const STONE_WORKS = [
-  ['/img/stone-island.jpg', '50% 62%', 'ti-tools-kitchen-2', ['Kitchen islands & worktops', '厨房岛台与台面'], ['Waterfall islands, worktops and splashbacks cut to your drawings.', '瀑布式岛台、台面和挡水板，按图纸切割。']],
-  ['/img/stones/s004.jpg', '50% 50%', 'ti-bath', ['Freestanding bathtubs', '整石浴缸'], ['Carved from a single block of marble or onyx.', '整块大理石或玉石掏挖成型。']],
-  ['/img/stones/s029.jpg', '50% 50%', 'ti-droplet', ['Vanity tops & basins', '洗手台与台盆'], ['Integrated sinks and vanity tops in one piece of stone.', '一体成型的台盆与洗手台面。']],
-  ['/img/stones/s003.jpg', '50% 50%', 'ti-flame', ['Fireplaces', '石材壁炉'], ['Classic and modern surrounds, made to your size.', '古典或现代风格壁炉，按尺寸定制。']],
-  ['/img/stones/s008.jpg', '50% 50%', 'ti-layout-board', ['Feature walls', '背景墙'], ['Book-matched slabs and backlit onyx walls for lobbies and living rooms.', '对纹大板与透光玉石墙，适合大堂与客厅。']],
-  ['/img/stones/s097.jpg', '50% 50%', 'ti-stairs', ['Floors & stairs', '地面与楼梯'], ['Floor tiles, treads and risers, cut and finished to size.', '地砖、踏步与踢脚，按尺寸切割和加工。']],
-  ['/img/stones/s024.jpg', '50% 50%', 'ti-flower', ['Waterjet inlay & mosaic', '水刀拼花与马赛克'], ['Medallions, borders and mosaics from several stones.', '多种石材拼成的拼花、波打线与马赛克。']],
-  ['/img/stones/s002.jpg', '50% 50%', 'ti-armchair', ['Carving & stone furniture', '雕刻与石材家具'], ['Tables, consoles, carved panels and decorative pieces.', '餐桌、玄关桌、雕刻面板与装饰件。']],
+  ['/img/scenes/c-island.jpg', '50% 50%', 'ti-tools-kitchen-2', ['Kitchen islands & worktops', '厨房岛台与台面'], ['Waterfall islands, worktops and splashbacks cut to your drawings.', '瀑布式岛台、台面和挡水板，按图纸切割。']],
+  ['/img/scenes/c-bathtub.jpg', '50% 50%', 'ti-bath', ['Freestanding bathtubs', '整石浴缸'], ['Carved from a single block of marble or onyx.', '整块大理石或玉石掏挖成型。']],
+  ['/img/scenes/c-vanity.jpg', '50% 50%', 'ti-droplet', ['Vanity tops & basins', '洗手台与台盆'], ['Integrated sinks and vanity tops in one piece of stone.', '一体成型的台盆与洗手台面。']],
+  ['/img/scenes/c-fireplace.jpg', '50% 50%', 'ti-flame', ['Fireplaces', '石材壁炉'], ['Classic and modern surrounds, made to your size.', '古典或现代风格壁炉，按尺寸定制。']],
+  ['/img/scenes/c-feature-wall.jpg', '50% 50%', 'ti-layout-board', ['Feature walls', '背景墙'], ['Book-matched slabs and backlit onyx walls for lobbies and living rooms.', '对纹大板与透光玉石墙，适合大堂与客厅。']],
+  ['/img/scenes/c-stairs.jpg', '50% 50%', 'ti-stairs', ['Floors & stairs', '地面与楼梯'], ['Floor tiles, treads and risers, cut and finished to size.', '地砖、踏步与踢脚，按尺寸切割和加工。']],
+  ['/img/scenes/c-inlay.jpg', '50% 50%', 'ti-flower', ['Waterjet inlay & mosaic', '水刀拼花与马赛克'], ['Medallions, borders and mosaics from several stones.', '多种石材拼成的拼花、波打线与马赛克。']],
+  ['/img/scenes/c-furniture.jpg', '50% 50%', 'ti-armchair', ['Carving & stone furniture', '雕刻与石材家具'], ['Tables, consoles, carved panels and decorative pieces.', '餐桌、玄关桌、雕刻面板与装饰件。']],
 ];
 function stoneWorksHTML() {
   const cards = STONE_WORKS.map(([img, pos, icon, t, d]) => '<div class="sw-card"><div class="ph"><img src="' + img + '" alt="" loading="lazy" style="object-position:' + pos + '"/><span class="ic"><i class="ti ' + icon + '" aria-hidden="true"></i></span></div><div class="bd"><b>' + esc(T(t)) + '</b><p>' + esc(T(d)) + '</p></div></div>').join('');
@@ -1654,7 +1739,8 @@ function renderLineHero() {
     el.innerHTML = '<div class="pg-hero"><div class="photo"><img src="' + IMG('stone-kitchen') + '" alt="' + esc(L('Marble backsplash and waterfall island in a warm wood kitchen', '暖色木质厨房中的大理石背景墙与中岛')) + '"/></div>' +
       '<div class="txt">' + crumbHTML() + '<div class="mk-eyebrow">' + esc(T(s.eyebrow)) + '</div><h1 class="mk-h1">' + T(s.title) + '</h1><p class="mk-lead">' + esc(T(s.intro)) + '</p>' +
         '<div class="mk-row">' + waBtn(s.wa, L('Request a quote on WhatsApp', 'WhatsApp 询价')) + scrollA('stoneLib', L('Browse the stone library ↓', '浏览石材库 ↓')) + '</div>' +
-        '<div class="h-eyebrow" style="margin:10px 0 -6px;color:var(--muted)">' + esc(L('Stone in real interiors', '实景效果')) + '</div><div class="thumbs3" style="max-width:560px">' + thumbs + '</div></div></div>' + stoneWorksHTML() + stoneLibraryHTML() + lineBody(s);
+        '<div class="h-eyebrow" style="margin:10px 0 -6px;color:var(--muted)">' + esc(L('Stone in real interiors', '实景效果')) + '</div><div class="thumbs3" style="max-width:560px">' + thumbs + '</div></div></div>' + stoneWorksHTML() + scenesHTML() + stoneLibraryHTML() + lineBody(s);
+    renderScenes();
     renderStoneGrid();
     return;
   }
