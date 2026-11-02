@@ -692,6 +692,73 @@ body.admin .tile-hint{display:block}
 @media (max-width:1100px){.hm-line .pic{height:170px}}
 @media (max-width:860px){.hm-lines{grid-template-columns:1fr}.hm-line .pic{height:190px}.hm-also b{font-size:17px}.hm-also .go{display:none}}
 
+/* stone library */
+.st-lib{padding:72px var(--pad) 56px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:24px;background:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(184,154,90,0.08),rgba(7,7,12,0) 70%)}
+.st-lib .mk-h2{font-size:48px}
+.st-search input{width:320px}
+.st-filters{display:flex;flex-direction:column;gap:14px}
+.st-filters .chips{flex-wrap:wrap;overflow:visible}
+.st-colors{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.st-colors .lbl{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.sw{width:30px;height:30px;border-radius:50%;background:var(--c);border:1px solid rgba(255,255,255,0.18);cursor:pointer;padding:0;box-shadow:0 0 0 0 var(--gold);transition:box-shadow 0.15s,transform 0.15s}
+.sw:hover{transform:scale(1.1)}
+.sw.on{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--gold)}
+.sw-clear{background:none;border:none;color:var(--gold-light);font-size:12px;cursor:pointer;margin-left:4px}
+.st-count{font-size:12px;color:var(--muted);margin-bottom:-8px}
+.st-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:18px}
+.st-card{display:flex;flex-direction:column;text-align:left;background:var(--bg2);border:1px solid var(--border);border-radius:4px;overflow:hidden;cursor:pointer;color:var(--text);padding:0;font:inherit;transition:border-color 0.2s,transform 0.2s;position:relative}
+.st-card:hover{border-color:var(--gold);transform:translateY(-3px)}
+.st-card .ph{display:block;aspect-ratio:4/3;overflow:hidden;background:#15141a;position:relative}
+.st-card .ph::after{content:'';position:absolute;inset:8px;border:1px solid rgba(212,185,122,0);transition:border-color 0.2s}
+.st-card:hover .ph::after{border-color:rgba(212,185,122,0.55)}
+.st-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s}
+.st-card:hover img{transform:scale(1.05)}
+.st-card .nm{display:flex;flex-direction:column;gap:3px;padding:12px 14px 4px}
+.st-card .nm b{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;line-height:1.15}
+.st-card .nm small{font-size:11px;color:var(--muted)}
+.st-card .ty{padding:6px 14px 14px;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold)}
+.st-empty{grid-column:1/-1;padding:40px;text-align:center;color:var(--muted);border:1px dashed var(--border2);border-radius:6px}
+.st-overlay{display:none;position:fixed;inset:0;z-index:300;background:rgba(5,5,9,0.82);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:24px}
+.st-overlay.open{display:flex}
+.st-box{position:relative;width:min(1040px,100%);max-height:calc(100vh - 48px);overflow:auto;display:grid;grid-template-columns:1.35fr 1fr;background:var(--bg2);border:1px solid var(--line);border-radius:8px;animation:fadeUp 0.3s ease both}
+.st-big{background:#111;min-height:100%}
+.st-big img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:4/3}
+.st-info{padding:36px 32px;display:flex;flex-direction:column;gap:14px}
+.st-info h3{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;line-height:1.05}
+.st-info .zh{font-size:20px;color:var(--gold-light)}
+.st-info .offer-list{margin-top:6px}
+.st-x{position:absolute;top:12px;right:12px;z-index:2;width:38px;height:38px;border-radius:50%;border:1px solid var(--border2);background:rgba(7,7,12,0.8);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.st-x:hover{border-color:var(--gold);color:var(--gold-light)}
+@media (max-width:860px){
+  .st-lib{padding:48px var(--pad) 40px}.st-lib .mk-h2{font-size:34px}
+  .st-search,.st-search input{width:100%}
+  .st-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .st-card .nm b{font-size:16px}
+  .st-box{grid-template-columns:1fr}.st-info{padding:22px 20px}.st-info h3{font-size:30px}
+  .st-overlay{padding:12px}
+}
+
+/* stone: made to measure */
+.sw-sec{padding:80px var(--pad) 64px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:32px}
+.sw-sec .mk-h2{font-size:48px}
+.sw-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.sw-stats div{padding:22px 20px;display:flex;flex-direction:column;gap:6px;border-left:1px solid var(--border)}
+.sw-stats div:first-child{border-left:none;padding-left:0}
+.sw-stats b{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:var(--gold-light);line-height:1}
+.sw-stats span{font-size:12px;color:var(--muted);line-height:1.6}
+.sw-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.sw-card{background:var(--bg2);border:1px solid var(--border);border-radius:4px;overflow:hidden;display:flex;flex-direction:column}
+.sw-card .ph{position:relative;aspect-ratio:4/3;overflow:hidden}
+.sw-card .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.sw-card .ph::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,7,12,0) 45%,rgba(7,7,12,0.75))}
+.sw-card .ic{position:absolute;left:14px;bottom:12px;z-index:2;width:42px;height:42px;border-radius:50%;background:rgba(7,7,12,0.78);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;color:var(--gold-light);font-size:20px}
+.sw-card .bd{padding:16px 18px 20px;display:flex;flex-direction:column;gap:6px}
+.sw-card b{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;line-height:1.15}
+.sw-card p{font-size:12px;color:var(--muted);line-height:1.7}
+.sw-how{display:flex;flex-direction:column;gap:16px;margin-top:8px}
+@media (max-width:1100px){.sw-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sw-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.sw-stats div:nth-child(3){border-left:none;padding-left:0}}
+@media (max-width:860px){.sw-sec{padding:48px var(--pad) 40px}.sw-sec .mk-h2{font-size:34px}.sw-stats b{font-size:32px}.sw-card b{font-size:18px}.sw-grid{gap:12px}}
+
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
@@ -1057,6 +1124,7 @@ body.admin .tile-hint{display:block}
   </div>
 </a>
 
+<div class="st-overlay" id="stoneBox" onclick="if(event.target===this)closeStone()"></div>
 <footer>
   <div class="footer-logo">Jingle Studio</div>
   <div class="footer-links" id="footerLinks"></div>
@@ -1486,6 +1554,95 @@ const crumb = '<a class="crumb" href="/trade" onclick="return nav(event,\'/trade
 const crumbHTML = () => crumb.replace('__TRADE__', esc(T(TRADE.name)));
 const hasPieces = () => secList().length > 0;
 
+// ----- Stone library (Natural Stone page) -----
+const ST_TYPES = [['all', ['All stones', '全部']], ['marble', ['Marble', '大理石']], ['quartzite', ['Quartzite', '石英岩']], ['onyx', ['Onyx & Agate', '玉石与玛瑙']], ['travertine', ['Travertine', '洞石']], ['granite', ['Granite', '花岗岩']]];
+const ST_COLORS = [['white', ['White', '白色'], '#ece9e2'], ['grey', ['Grey', '灰色'], '#8d8f95'], ['black', ['Black', '黑色'], '#141317'], ['beige', ['Beige & Brown', '米黄与棕'], '#b59a78'], ['gold', ['Gold', '金色'], '#d1a84f'], ['green', ['Green', '绿色'], '#2f6b4f'], ['blue', ['Blue', '蓝色'], '#2f5f9a'], ['pink', ['Pink & Red', '粉与红'], '#c9707a'], ['purple', ['Purple', '紫色'], '#6c3f8f']];
+let stType = 'all', stColor = '', stQuery = '', stLoading = false;
+const stoneList = () => (window.STONES || []).map(([id, zh, en, type, color]) => ({ id, zh, en, type, color }));
+function loadStones() {
+  if (window.STONES || stLoading) return;
+  stLoading = true;
+  const s = document.createElement('script'); s.src = '/stones.js';
+  s.onload = () => { if (currentView === 'section' && currentSection === 'stone') renderStoneGrid(true); };
+  document.head.appendChild(s);
+}
+function stoneFiltered() {
+  const q = norm(stQuery).trim();
+  return stoneList().filter(s => (stType === 'all' || s.type === stType) && (!stColor || s.color === stColor) && (!q || norm(s.en + ' ' + s.zh).includes(q)));
+}
+function stoneLibraryHTML() {
+  const n = Math.floor(((window.STONES || []).length || 140) / 10) * 10;
+  return '<section class="st-lib" id="stoneLib"><div class="sec-head"><div><div class="mk-eyebrow">' + esc(L('Stone Library', '石材库')) + '</div>' +
+      '<h2 class="mk-h2">' + L('Find your stone.<br><em>' + n + '+ stones to choose from.</em>', '找到你想要的石材，<br><em>' + n + '+ 款可选。</em>') + '</h2>' +
+      '<p class="mk-lead">' + esc(L('Marble, quartzite, onyx, travertine and granite — filter by type or colour and tap any stone to ask for slab photos, sizes and price.', '大理石、石英岩、玉石、洞石与花岗岩。按种类或颜色筛选，点开任意一款即可询问大板实拍、尺寸和价格。')) + '</p></div>' +
+      '<div class="search st-search"><i class="ti ti-search" aria-hidden="true"></i><input type="search" id="stSearch" placeholder="' + esc(L('Search e.g. Calacatta, 鱼肚白…', '搜索：如 鱼肚白、Calacatta…')) + '" value="' + esc(stQuery) + '" oninput="stQuery=this.value;renderStoneGrid()" aria-label="' + esc(L('Search stones', '搜索石材')) + '"/></div></div>' +
+    '<div class="st-filters"><div class="chips" id="stTypes"></div><div class="st-colors" id="stColors"></div></div>' +
+    '<div class="st-count" id="stCount"></div><div class="st-grid" id="stGrid"></div>' +
+    '<p class="rate-note">' + esc(L('Photos show the typical colour and veining. Natural stone varies from block to block, so we send photos of the actual slabs before you order.', '图片为该石材的典型颜色与纹理。天然石材每批都有差异，下单前我们会发实际大板的照片给你确认。')) + '</p></section>';
+}
+function renderStoneGrid(full) {
+  const grid = document.getElementById('stGrid');
+  if (!grid) return;
+  if (!window.STONES) { grid.innerHTML = '<div class="st-empty">' + esc(L('Loading stones…', '正在加载…')) + '</div>'; loadStones(); return; }
+  const all = stoneList();
+  const cnt = k => all.filter(s => (k === 'all' || s.type === k) && (!stColor || s.color === stColor)).length;
+  document.getElementById('stTypes').innerHTML = ST_TYPES.map(([k, nm]) => '<button class="chip' + (stType === k ? ' active' : '') + '" onclick="stType=\'' + k + '\';renderStoneGrid()">' + esc(T(nm)) + '<span class="n">' + cnt(k) + '</span></button>').join('');
+  document.getElementById('stColors').innerHTML = '<span class="lbl">' + esc(L('Colour', '颜色')) + '</span>' + ST_COLORS.map(([k, nm, hex]) =>
+    '<button class="sw' + (stColor === k ? ' on' : '') + '" style="--c:' + hex + '" title="' + esc(T(nm)) + '" aria-label="' + esc(T(nm)) + '" aria-pressed="' + (stColor === k) + '" onclick="stColor=stColor===\'' + k + '\'?\'\':\'' + k + '\';renderStoneGrid()"></button>').join('') +
+    (stColor ? '<button class="sw-clear" onclick="stColor=\'\';renderStoneGrid()">' + esc(L('Clear', '清除')) + ' ✕</button>' : '');
+  const list = stoneFiltered();
+  const typeName = k => T((ST_TYPES.find(t => t[0] === k) || ST_TYPES[0])[1]);
+  document.getElementById('stCount').textContent = list.length + ' ' + L(list.length === 1 ? 'stone' : 'stones', '款');
+  grid.innerHTML = list.length ? list.map(s =>
+    '<button class="st-card" onclick="openStone(\'' + s.id + '\')"><span class="ph"><img src="/img/stones/' + s.id + '.jpg" alt="' + esc(s.en + ' ' + s.zh) + '" loading="lazy"/></span>' +
+      '<span class="nm"><b>' + esc(currentLang === 'zh' ? s.zh : s.en) + '</b><small>' + esc(currentLang === 'zh' ? s.en : s.zh) + '</small></span><span class="ty">' + esc(typeName(s.type)) + '</span></button>').join('')
+    : '<div class="st-empty">' + esc(L('No stones match. Try another colour or clear the search.', '没有符合条件的石材，换个颜色或清除搜索试试。')) + '</div>';
+}
+function openStone(id) {
+  const s = stoneList().find(x => x.id === id); if (!s) return;
+  const typeName = T((ST_TYPES.find(t => t[0] === s.type) || ST_TYPES[0])[1]);
+  const msg = 'Hello! I am interested in ' + s.en + ' (' + s.zh + '). Could you send slab photos, sizes and price?';
+  const el = document.getElementById('stoneBox');
+  el.innerHTML = '<div class="st-box" role="dialog" aria-modal="true" aria-label="' + esc(s.en) + '"><button class="st-x" onclick="closeStone()" aria-label="Close"><i class="ti ti-x" aria-hidden="true"></i></button>' +
+    '<div class="st-big"><img src="/img/stones/' + s.id + '.jpg" alt="' + esc(s.en + ' ' + s.zh) + '"/></div>' +
+    '<div class="st-info"><div class="mk-eyebrow">' + esc(typeName) + '</div><h3>' + esc(s.en) + '</h3><div class="zh zh-serif">' + esc(s.zh) + '</div>' +
+      '<ul class="offer-list"><li><i class="ti ti-check" aria-hidden="true"></i><span>' + esc(L('Slabs and cut-to-size tiles', '大板与按尺寸切割的板材')) + '</span></li><li><i class="ti ti-check" aria-hidden="true"></i><span>' + esc(L('Photos of the actual slabs before you order', '下单前提供实际大板照片')) + '</span></li><li><i class="ti ti-check" aria-hidden="true"></i><span>' + esc(L('Shipped to the UK, Europe and worldwide', '发往英国、欧洲及全球')) + '</span></li></ul>' +
+      '<div class="mk-row">' + waBtn(msg, L('Ask about this stone', '询问这款石材')) + '<a class="btn btn-ghost btn-lg" href="' + mailto(s.en + ' (' + s.zh + ') enquiry') + '"><i class="ti ti-mail" aria-hidden="true"></i>' + esc(L('Email', '邮件')) + '</a></div></div></div>';
+  el.classList.add('open'); document.body.style.overflow = 'hidden';
+}
+function closeStone() { const el = document.getElementById('stoneBox'); el.classList.remove('open'); el.innerHTML = ''; document.body.style.overflow = ''; }
+
+
+// ----- Stone: made-to-measure project types + how it works -----
+const STONE_WORKS = [
+  ['/img/stone-island.jpg', '50% 62%', 'ti-tools-kitchen-2', ['Kitchen islands & worktops', '厨房岛台与台面'], ['Waterfall islands, worktops and splashbacks cut to your drawings.', '瀑布式岛台、台面和挡水板，按图纸切割。']],
+  ['/img/stones/s004.jpg', '50% 50%', 'ti-bath', ['Freestanding bathtubs', '整石浴缸'], ['Carved from a single block of marble or onyx.', '整块大理石或玉石掏挖成型。']],
+  ['/img/stones/s029.jpg', '50% 50%', 'ti-droplet', ['Vanity tops & basins', '洗手台与台盆'], ['Integrated sinks and vanity tops in one piece of stone.', '一体成型的台盆与洗手台面。']],
+  ['/img/stones/s003.jpg', '50% 50%', 'ti-flame', ['Fireplaces', '石材壁炉'], ['Classic and modern surrounds, made to your size.', '古典或现代风格壁炉，按尺寸定制。']],
+  ['/img/stones/s008.jpg', '50% 50%', 'ti-layout-board', ['Feature walls', '背景墙'], ['Book-matched slabs and backlit onyx walls for lobbies and living rooms.', '对纹大板与透光玉石墙，适合大堂与客厅。']],
+  ['/img/stones/s097.jpg', '50% 50%', 'ti-stairs', ['Floors & stairs', '地面与楼梯'], ['Floor tiles, treads and risers, cut and finished to size.', '地砖、踏步与踢脚，按尺寸切割和加工。']],
+  ['/img/stones/s024.jpg', '50% 50%', 'ti-flower', ['Waterjet inlay & mosaic', '水刀拼花与马赛克'], ['Medallions, borders and mosaics from several stones.', '多种石材拼成的拼花、波打线与马赛克。']],
+  ['/img/stones/s002.jpg', '50% 50%', 'ti-armchair', ['Carving & stone furniture', '雕刻与石材家具'], ['Tables, consoles, carved panels and decorative pieces.', '餐桌、玄关桌、雕刻面板与装饰件。']],
+];
+function stoneWorksHTML() {
+  const cards = STONE_WORKS.map(([img, pos, icon, t, d]) => '<div class="sw-card"><div class="ph"><img src="' + img + '" alt="" loading="lazy" style="object-position:' + pos + '"/><span class="ic"><i class="ti ' + icon + '" aria-hidden="true"></i></span></div><div class="bd"><b>' + esc(T(t)) + '</b><p>' + esc(T(d)) + '</p></div></div>').join('');
+  const stats = [['300+', ['natural stones to choose from', '种天然石材可选']], ['100+', ['cutting, carving and finishing techniques', '种切割、雕刻与表面工艺']], ['1:1', ['made to your drawings and sizes', '按你的图纸与尺寸生产']], ['∞', ["can't find a stone? We'll source it", '找不到想要的石材？我们帮你找']]]
+    .map(([n, l]) => '<div><b>' + n + '</b><span>' + esc(T(l)) + '</span></div>').join('');
+  const steps = [
+    [['Send your drawings', '发来图纸'], ['Tell us the stone, sizes and finish — or send drawings and photos of your project.', '告诉我们石材、尺寸和表面要求，或直接发图纸和项目照片。']],
+    [['Choose your slabs', '挑选大板'], ['We send photos and video of the actual slabs, so you pick the exact veining.', '我们发实际大板的照片和视频，由你挑选具体纹理。']],
+    [['Cut, finish & check', '切割加工与检查'], ['Pieces are cut, finished and laid out for a final check before packing.', '切割、加工后先排板检查，确认无误再打包。']],
+    [['Crated & delivered', '装箱发货'], ['Packed in fumigated wooden crates and shipped to your port or site.', '熏蒸木箱包装，海运至你的港口或工地。']],
+  ].map(([t, d], i) => '<div class="step"><div class="n">0' + (i + 1) + '</div><h4>' + esc(T(t)) + '</h4><p>' + esc(T(d)) + '</p></div>').join('');
+  return '<section class="sw-sec"><div class="sec-head"><div><div class="mk-eyebrow">' + esc(L('Made to measure', '按需定制')) + '</div>' +
+      '<h2 class="mk-h2">' + L('From raw slab<br><em>to finished piece.</em>', '从原石大板，<br><em>到完工成品。</em>') + '</h2>' +
+      '<p class="mk-lead">' + esc(L('Beyond slabs and tiles, we supply finished stone pieces cut to your drawings — for designers, fit-out contractors and homeowners.', '除了大板和板材，我们还按图纸供应石材成品，服务设计师、装修承包商和业主。')) + '</p></div>' +
+      waBtn('Hello! I have a custom stone project. Can I send you drawings?', L('Send us your drawings', '发图纸给我们')) + '</div>' +
+    '<div class="sw-stats">' + stats + '</div>' +
+    '<div class="sw-grid">' + cards + '</div>' +
+    '<div class="sw-how"><div class="h-eyebrow">' + esc(L('How a stone project works', '石材项目流程')) + '</div><div class="steps">' + steps + '</div></div></section>';
+}
+
 function renderLineHero() {
   const el = document.getElementById('lineHero');
   const s = SECTIONS[currentSection];
@@ -1496,8 +1653,9 @@ function renderLineHero() {
       .map(([n, pos, cap]) => '<figure><img src="' + IMG(n) + '" alt="' + esc(T(cap)) + '" style="object-position:' + pos + '"/><figcaption>' + esc(T(cap)) + '</figcaption></figure>').join('');
     el.innerHTML = '<div class="pg-hero"><div class="photo"><img src="' + IMG('stone-kitchen') + '" alt="' + esc(L('Marble backsplash and waterfall island in a warm wood kitchen', '暖色木质厨房中的大理石背景墙与中岛')) + '"/></div>' +
       '<div class="txt">' + crumbHTML() + '<div class="mk-eyebrow">' + esc(T(s.eyebrow)) + '</div><h1 class="mk-h1">' + T(s.title) + '</h1><p class="mk-lead">' + esc(T(s.intro)) + '</p>' +
-        '<div class="mk-row">' + waBtn(s.wa, L('Request a quote on WhatsApp', 'WhatsApp 询价')) + gallery + '</div>' +
-        '<div class="h-eyebrow" style="margin:10px 0 -6px;color:var(--muted)">' + esc(L('Stone in real interiors', '实景效果')) + '</div><div class="thumbs3" style="max-width:560px">' + thumbs + '</div></div></div>' + lineBody(s);
+        '<div class="mk-row">' + waBtn(s.wa, L('Request a quote on WhatsApp', 'WhatsApp 询价')) + scrollA('stoneLib', L('Browse the stone library ↓', '浏览石材库 ↓')) + '</div>' +
+        '<div class="h-eyebrow" style="margin:10px 0 -6px;color:var(--muted)">' + esc(L('Stone in real interiors', '实景效果')) + '</div><div class="thumbs3" style="max-width:560px">' + thumbs + '</div></div></div>' + stoneWorksHTML() + stoneLibraryHTML() + lineBody(s);
+    renderStoneGrid();
     return;
   }
   if (currentSection === 'paper') {
@@ -2289,7 +2447,7 @@ function requestCloseCats() {
   closeCats();
 }
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeDetail(); closeLogin(); }
+  if (e.key === 'Escape') { closeDetail(); closeLogin(); closeStone(); }
   if (detailProduct) {
     if (e.key === 'ArrowLeft') galleryNav(-1);
     if (e.key === 'ArrowRight') galleryNav(1);
