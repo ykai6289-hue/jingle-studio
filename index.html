@@ -481,7 +481,7 @@ body.admin .tile-hint{display:block}
 
 /* tea offer band on home */
 .hm-tea{position:relative;min-height:640px;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:flex-end;padding:60px var(--pad)}
-.hm-tea .bgimg{position:absolute;left:0;top:30px;bottom:30px;width:64%;object-fit:contain;object-position:left center}
+.hm-tea .bgimg{position:absolute;left:0;top:30px;height:calc(100% - 60px);width:64%;object-fit:contain;object-position:left center}
 .hm-tea .fade{position:absolute;right:0;top:0;bottom:0;width:45%;background:linear-gradient(270deg,var(--bg) 62%,rgba(7,7,12,0))}
 .hm-tea .stamp{position:absolute;left:44%;top:66px;z-index:3}
 .hm-tea .txt{position:relative;z-index:2;width:520px;max-width:100%;display:flex;flex-direction:column;gap:18px}
@@ -648,6 +648,16 @@ body.admin .tile-hint{display:block}
   .thumbs3 img{height:84px}
   .tea-ws{padding:24px 20px}
 }
+
+/* soft transitions between home bands */
+.hm-tea{border-bottom:none}
+.hm-tea .bgimg,.tea-hero .bgimg{-webkit-mask-image:linear-gradient(180deg,#000 72%,transparent 100%);mask-image:linear-gradient(180deg,#000 72%,transparent 100%)}
+.hm-sep{display:flex;align-items:center;justify-content:center;gap:18px;padding:56px var(--pad) 40px;color:var(--gold);font-size:11px}
+.hm-sep::before,.hm-sep::after{content:'';height:1px;width:min(220px,28vw);background:linear-gradient(90deg,rgba(184,154,90,0),rgba(184,154,90,0.6))}
+.hm-sep::after{background:linear-gradient(270deg,rgba(184,154,90,0),rgba(184,154,90,0.6))}
+.hm-stone .bgimg{-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 180px,#000 calc(100% - 180px),transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 180px,#000 calc(100% - 180px),transparent 100%)}
+.hm-paper{border-top:none}
+@media (max-width:860px){.hm-sep{padding:36px var(--pad) 24px}.hm-stone .bgimg{-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 80px);mask-image:linear-gradient(180deg,transparent 0,#000 80px)}}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 </style>
@@ -1351,6 +1361,7 @@ function renderHome() {
         '<div class="price-line"><span class="lbl">' + L('Now from', '现价') + '</span><span class="now">¥' + TEA_FROM + '</span><span class="was">¥' + TEA_FROM_WAS + '</span></div>' +
         '<div class="mk-row">' + navA('/tea', L('SHOP THE OFFER →', '查看优惠 →'), 'btn-red') + '</div></div></section>' +
     // NATURAL STONE
+    '<div class="hm-sep" aria-hidden="true">◆</div>' +
     '<section class="hm-stone"><img class="bgimg" src="' + IMG('stone-kitchen') + '" alt="' + esc(L('Marble backsplash and waterfall island in a warm wood kitchen', '暖色木质厨房中的大理石背景墙与中岛')) + '" loading="lazy"/><div class="fade"></div>' +
       '<div class="txt"><div class="mk-eyebrow">' + esc(L('Natural Stone', '天然石材')) + '</div>' +
         '<h2 class="mk-h2">' + L('Marble that turns a room<br><em>into a statement.</em>', '一块好石材，<br><em>让整个空间不一样。</em>') + '</h2>' +
