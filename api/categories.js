@@ -34,7 +34,7 @@ export async function PUT(request) {
       const section = SECTION_IDS.includes(c.section) ? c.section : 'fashion';
       categories.push({ id, en: en || zh, zh: zh || en, section, brands });
     }
-    const data = await readData();
+    const data = await readData({ fresh: true });
     data.categories = categories;
     for (const p of data.products) {
       const cat = categories.find(c => c.id === p.cat);

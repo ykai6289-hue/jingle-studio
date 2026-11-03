@@ -11,7 +11,7 @@ export async function PUT(request) {
     if (!HOME_TILES.includes(tile)) return json({ error: 'Unknown picture slot' }, 400);
     const url = String(body.url || '').trim();
     if (url && !/^https:\/\/[^/]+\.blob\.vercel-storage\.com\//.test(url)) return json({ error: 'Upload the picture first' }, 400);
-    const data = await readData();
+    const data = await readData({ fresh: true });
     const old = data.home.tiles[tile];
     if (url) data.home.tiles[tile] = url; else delete data.home.tiles[tile];
     await writeData(data);

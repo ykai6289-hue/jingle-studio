@@ -21,9 +21,13 @@ function clean(p, catIds) {
 }
 
 // Everyone: { categories, products }
-export async function GET() {
+export async function GET(request) {
   try {
-    return json(await readData());
+    // ?fresh=1 (admin) skips caches; everyone else gets a copy cached at the edge for 30 s
+    const fresh = new URL(request.url).searchParams.has('fresh');
+    const res = json(await readData({ fresh }));
+    if (!fresh) res.headers.set('cache-control', 'public, max-age=0, s-maxage=30, stale-while-revalidate=300');
+    return res;
   } catch (e) {
     return json({ error: e.message }, 500);
   }
@@ -33,7 +37,7 @@ export async function GET() {
 export async function PUT(request) {
   if (!isAdmin(request)) return json({ error: 'Not logged in' }, 401);
   try {
-    const data = await readData();
+    const data = await readData({ fresh: true });
     const body = await request.json();
     const p = clean(body, new Set(data.categories.map(c => c.id)));
     if (!p.name) return json({ error: 'Name is required' }, 400);
@@ -59,7 +63,7 @@ export async function DELETE(request) {
   if (!isAdmin(request)) return json({ error: 'Not logged in' }, 401);
   try {
     const id = Number(new URL(request.url).searchParams.get('id'));
-    const data = await readData();
+    const data = await readData({ fresh: true });
     const gone = data.products.find(x => x.id === id);
     if (!gone) return json({ error: 'Not found' }, 404);
     data.products = data.products.filter(x => x.id !== id);
