@@ -3,7 +3,19 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Jingle Studio — Luxury Collective</title>
+<!--SEO-->
+<title>Jingle Studio — Natural Stone, Custom Paper &amp; Herbal Tea from China</title>
+<meta name="description" content="Wholesale and made-to-order supply from China to the UK, Europe and worldwide: marble and natural stone, custom-printed paper products and FuLu is Coming herbal tea."/>
+<link rel="canonical" href="https://www.jingleluxurystudio.com/"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="Jingle Studio"/>
+<meta property="og:title" content="Jingle Studio — Natural Stone, Custom Paper &amp; Herbal Tea from China"/>
+<meta property="og:description" content="Wholesale and made-to-order supply from China to the UK, Europe and worldwide: marble and natural stone, custom-printed paper products and FuLu is Coming herbal tea."/>
+<meta property="og:url" content="https://www.jingleluxurystudio.com/"/>
+<meta property="og:image" content="https://www.jingleluxurystudio.com/img/stone-persian.jpg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<script>window.__SEO={"/": {"t": "Jingle Studio — Natural Stone, Custom Paper & Herbal Tea from China", "d": "Wholesale and made-to-order supply from China to the UK, Europe and worldwide: marble and natural stone, custom-printed paper products and FuLu is Coming herbal tea."}, "/trade": {"t": "Trade & Custom Supply from China — Stone, Paper, Herbal Tea | Jingle Studio", "d": "Work directly with manufacturers across China. Natural stone, custom-printed paper products and herbal tea, made to your spec and shipped to the UK, Europe and worldwide."}, "/stone": {"t": "Marble & Natural Stone Supplier — 140+ Stones, Slabs & Cut-to-Size | Jingle Studio", "d": "Marble, quartzite, onyx, travertine and granite from China. Browse 140+ stones, see them in real interiors, and order slabs or finished pieces cut to your drawings. Shipped to the UK, Europe and worldwide."}, "/paper": {"t": "Custom Printed Napkins, Coasters & Greaseproof Paper | Jingle Studio", "d": "Napkins, drink coasters and greaseproof paper printed with your logo, colours and sizes. Made to order for bars, restaurants and hotels in the UK and Europe."}, "/tea": {"t": "FuLu is Coming Herbal Tea — Five-Elements Range, Up to 51% Off | Jingle Studio", "d": "Six herbal infusions inspired by the Chinese five elements, in signature gourd packaging. Retail from ¥179 per box, wholesale for hotels, spas and gift shops."}, "/collection": {"t": "The Collection — Bags, Sneakers, Heels & Apparel | Jingle Studio", "d": "Hand-picked bags, sneakers, heels, apparel and accessories, photographed piece by piece. Message us on WhatsApp to ask about any item."}};</script>
+<!--/SEO-->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
@@ -705,7 +717,7 @@ body.admin .tile-hint{display:block}
 .sw-clear{background:none;border:none;color:var(--gold-light);font-size:12px;cursor:pointer;margin-left:4px}
 .st-count{font-size:12px;color:var(--muted);margin-bottom:-8px}
 .st-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:18px}
-.st-card{display:flex;flex-direction:column;text-align:left;background:var(--bg2);border:1px solid var(--border);border-radius:4px;overflow:hidden;cursor:pointer;color:var(--text);padding:0;font:inherit;transition:border-color 0.2s,transform 0.2s;position:relative}
+.st-card{text-decoration:none;display:flex;flex-direction:column;text-align:left;background:var(--bg2);border:1px solid var(--border);border-radius:4px;overflow:hidden;cursor:pointer;color:var(--text);padding:0;font:inherit;transition:border-color 0.2s,transform 0.2s;position:relative}
 .st-card:hover{border-color:var(--gold);transform:translateY(-3px)}
 .st-card .ph{display:block;aspect-ratio:4/3;overflow:hidden;background:#15141a;position:relative}
 .st-card .ph::after{content:'';position:absolute;inset:8px;border:1px solid rgba(212,185,122,0);transition:border-color 0.2s}
@@ -795,6 +807,7 @@ body.admin .tile-hint{display:block}
 @media (max-width:860px){.paper-art.paper-hero-art{margin-bottom:-170px;transform:scale(0.58)}}
 @media (max-width:420px){.paper-art.paper-hero-art{transform:scale(0.52);margin-bottom:-200px}}
 
+.st-more{font-size:12px;color:var(--gold-light);text-decoration:none}.st-more:hover{text-decoration:underline}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
@@ -1599,6 +1612,7 @@ const stoneList = () => (window.STONES || []).map(([id, zh, en, type, color]) =>
 function loadStones() {
   if (window.STONES || stLoading) return;
   stLoading = true;
+  const sl = document.createElement('script'); sl.src = '/stones-slugs.js'; document.head.appendChild(sl);
   const s = document.createElement('script'); s.src = '/stones.js';
   s.onload = () => { if (currentView === 'section' && currentSection === 'stone') renderStoneGrid(true); };
   document.head.appendChild(s);
@@ -1694,8 +1708,8 @@ function renderStoneGrid(full) {
   const typeName = k => T((ST_TYPES.find(t => t[0] === k) || ST_TYPES[0])[1]);
   document.getElementById('stCount').textContent = list.length + ' ' + L(list.length === 1 ? 'stone' : 'stones', '款');
   grid.innerHTML = list.length ? list.map(s =>
-    '<button class="st-card" onclick="openStone(\'' + s.id + '\')"><span class="ph"><img src="/img/stones/' + s.id + '.jpg" alt="' + esc(s.en + ' ' + s.zh) + '" loading="lazy"/></span>' +
-      (SCENES.some(x => x[1] === s.zh) ? '<span class="has-sc"><i class="ti ti-photo" aria-hidden="true"></i>' + esc(L('Project photo', '有实景')) + '</span>' : '') + '<span class="nm"><b>' + esc(currentLang === 'zh' ? s.zh : s.en) + '</b><small>' + esc(currentLang === 'zh' ? s.en : s.zh) + '</small></span><span class="ty">' + esc(typeName(s.type)) + '</span></button>').join('')
+    '<a class="st-card" href="/stones/' + ((window.STONE_SLUGS || {})[s.id] || '') + '" onclick="if(!(event.metaKey||event.ctrlKey)){event.preventDefault();openStone(\'' + s.id + '\')}"><span class="ph"><img src="/img/stones/' + s.id + '.jpg" alt="' + esc(s.en + ' ' + s.zh) + '" loading="lazy"/></span>' +
+      (SCENES.some(x => x[1] === s.zh) ? '<span class="has-sc"><i class="ti ti-photo" aria-hidden="true"></i>' + esc(L('Project photo', '有实景')) + '</span>' : '') + '<span class="nm"><b>' + esc(currentLang === 'zh' ? s.zh : s.en) + '</b><small>' + esc(currentLang === 'zh' ? s.en : s.zh) + '</small></span><span class="ty">' + esc(typeName(s.type)) + '</span></a>').join('')
     : '<div class="st-empty">' + esc(L('No stones match. Try another colour or clear the search.', '没有符合条件的石材，换个颜色或清除搜索试试。')) + '</div>';
 }
 function openStone(id, startImg) {
@@ -1711,7 +1725,8 @@ function openStone(id, startImg) {
     '<div class="st-big"><img id="stBigImg" src="' + first + '" alt="' + esc(s.en + ' ' + s.zh) + '"/></div>' +
     '<div class="st-info"><div class="mk-eyebrow">' + esc(typeName) + '</div><h3>' + esc(s.en) + '</h3><div class="zh zh-serif">' + esc(s.zh) + '</div>' + thumbs +
       '<ul class="offer-list"><li><i class="ti ti-check" aria-hidden="true"></i><span>' + esc(L('Slabs and cut-to-size tiles', '大板与按尺寸切割的板材')) + '</span></li><li><i class="ti ti-check" aria-hidden="true"></i><span>' + esc(L('Photos of the actual slabs before you order', '下单前提供实际大板照片')) + '</span></li><li><i class="ti ti-check" aria-hidden="true"></i><span>' + esc(L('Shipped to the UK, Europe and worldwide', '发往英国、欧洲及全球')) + '</span></li></ul>' +
-      '<div class="mk-row">' + waBtn(msg, L('Ask about this stone', '询问这款石材')) + '<a class="btn btn-ghost btn-lg" href="' + mailto(s.en + ' (' + s.zh + ') enquiry') + '"><i class="ti ti-mail" aria-hidden="true"></i>' + esc(L('Email', '邮件')) + '</a></div></div></div>';
+      '<div class="mk-row">' + waBtn(msg, L('Ask about this stone', '询问这款石材')) + '<a class="btn btn-ghost btn-lg" href="' + mailto(s.en + ' (' + s.zh + ') enquiry') + '"><i class="ti ti-mail" aria-hidden="true"></i>' + esc(L('Email', '邮件')) + '</a></div>' +
+      ((window.STONE_SLUGS || {})[s.id] ? '<a class="st-more" href="/stones/' + window.STONE_SLUGS[s.id] + '">' + esc(L('Full stone page →', '查看石材详情页 →')) + '</a>' : '') + '</div></div>';
   el.classList.add('open'); document.body.style.overflow = 'hidden';
 }
 function closeStone() { const el = document.getElementById('stoneBox'); el.classList.remove('open'); el.innerHTML = ''; document.body.style.overflow = ''; }
@@ -1836,7 +1851,10 @@ function applyRoute() {
   b.toggle('view-fashion', currentView === 'section' && currentSection === 'fashion');
   b.toggle('view-line', currentView === 'section' && LINE_SECTIONS.includes(currentSection));
   b.toggle('view-tea', currentView === 'section' && currentSection === 'tea');
-  document.title = (currentView === 'home' ? 'Jingle Studio' : (currentView === 'trade' ? L('Trade & Custom', '批发与定制') : T(SECTIONS[currentSection].name)) + ' — Jingle Studio');
+  const seoKey = currentView === 'home' ? '/' : currentView === 'trade' ? '/trade' : SECTIONS[currentSection].path;
+  const seo = (window.__SEO || {})[seoKey];
+  document.title = seo ? seo.t : 'Jingle Studio';
+  const md = document.querySelector('meta[name="description"]'); if (md && seo) md.setAttribute('content', seo.d);
   document.getElementById('waFloat').href = waText(currentView === 'home' ? 'Hello! I would like to know more.' : currentView === 'trade' ? 'Hello! I have a trade / wholesale enquiry.' : SECTIONS[currentSection].wa);
   renderAll();
   syncNavHeight();
